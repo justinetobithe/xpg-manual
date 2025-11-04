@@ -49,11 +49,18 @@ export default function GameCard({ game }) {
     return (
         <Link
             to={`/games/${slug || game.iid}`}
-            className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F4A52E]/50 rounded-xl"
+            className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F4A52E]/50 rounded-xl min-w-0"
         >
-            <article className="group rounded-xl overflow-hidden bg-[#0f141a] border-2 border-[#A66C13] shadow-[0_0_0_1px_rgba(255,168,63,.15),0_8px_24px_rgba(0,0,0,.35)] hover:border-[#F4A52E] transition-colors">
+            <article
+                className="
+          rounded-xl overflow-hidden bg-[#0f141a] border-2 border-[#A66C13]
+          ring-1 ring-[#F4A52E]/10 shadow-lg
+          hover:border-[#F4A52E] transition-colors
+          min-w-0 max-w-full
+        "
+            >
                 <div className="relative">
-                    <div className="aspect-[16/9] w-full bg-[#0b0f13]">
+                    <div className="aspect-[16/9] w-full bg-[#0b0f13] overflow-hidden">
                         {!loaded && (
                             <div className="absolute inset-0 grid place-items-center">
                                 <Spinner className="h-6 w-6 text-orange-300" />
@@ -68,15 +75,16 @@ export default function GameCard({ game }) {
                                 if (idx < candidates.length - 1) setIdx((i) => i + 1);
                                 else setLoaded(true);
                             }}
-                            className={`w-full h-full object-cover ${loaded ? "block" : "opacity-0"}`}
+                            className={`block w-full h-full object-cover ${loaded ? "opacity-100" : "opacity-0"}`}
                         />
                     </div>
+
                     <div className="pointer-events-none absolute inset-0 ring-0 group-hover:ring-2 ring-[#F4A52E]/50 transition" />
                 </div>
 
-                <div className="p-4">
-                    <h2 className="text-lg font-semibold text-orange-300 line-clamp-1">{title}</h2>
-                    {text && <p className="text-sm text-gray-400 mt-2 line-clamp-3">{text}</p>}
+                <div className="p-4 min-w-0">
+                    <h2 className="text-lg font-semibold text-orange-300 line-clamp-1 break-words">{title}</h2>
+                    {text && <p className="text-sm text-gray-400 mt-2 line-clamp-3 break-words">{text}</p>}
                 </div>
             </article>
         </Link>
