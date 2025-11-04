@@ -1,42 +1,64 @@
-import { useEffect, useMemo, useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
+import Spinner from "./Spinner";
 
 function stripHtml(s = "") {
     return s.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 }
-
-const API_ORIGIN = import.meta.env.VITE_API_ORIGIN || "";
+const basename = (p = "") => {
+    const parts = String(p).trim().split(/[/\\]+/);
+    return parts[parts.length - 1] || "";
+};
+const buildVariants = (slug = "") => {
+    const s = String(slug).trim();
+    if (!s) return [];
+    const v = new Set();
+    const dash = s.replace(/_/g, "-");
+    const under = s.replace(/-/g, "_");
+    const all = [s, dash, under, s.toLowerCase(), dash.toLowerCase(), under.toLowerCase()];
+    const exts = [".jpg", ".jpeg", ".png", ".webp"];
+    for (const name of all) for (const ext of exts) v.add(`/games/${encodeURIComponent(name)}${ext}`);
+    return [...v];
+};
 
 export default function GameCard({ game }) {
     const title = game.iname1 || "Untitled";
-    const base = `${API_ORIGIN}/games`;
+    const text = useMemo(() => stripHtml(game.itext || ""), [game.itext]);
+
+    const file = basename(game.img);
+    const slug = (game.iurl || "").trim();
 
     const candidates = useMemo(() => {
         const list = [];
-        if (game.img) list.push(game.img);
-        if (game.iurl) list.push(`${game.iurl}.jpg`, `${game.iurl}.png`, `${game.iurl}.webp`);
-        list.push("placeholder.jpg");
+        if (file) list.push(`/games/${encodeURIComponent(file)}`);
+        list.push(...buildVariants(slug));
+        list.push(`/games/placeholder.jpg`);
         return Array.from(new Set(list));
-    }, [game.img, game.iurl]);
+    }, [file, slug]);
 
     const [idx, setIdx] = useState(0);
     const [loaded, setLoaded] = useState(false);
-    const text = useMemo(() => stripHtml(game.itext || ""), [game.itext]);
 
     useEffect(() => {
         setIdx(0);
         setLoaded(false);
     }, [candidates.join("|")]);
 
-    const src = `${base}/${candidates[idx]}`;
-    const slug = game.iurl || String(game.iid);
+    const src = candidates[idx];
 
     return (
-        <Link to={`/games/${slug}`} className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F4A52E]/50 rounded-xl">
+        <Link
+            to={`/games/${slug || game.iid}`}
+            className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F4A52E]/50 rounded-xl"
+        >
             <article className="group rounded-xl overflow-hidden bg-[#0f141a] border-2 border-[#A66C13] shadow-[0_0_0_1px_rgba(255,168,63,.15),0_8px_24px_rgba(0,0,0,.35)] hover:border-[#F4A52E] transition-colors">
                 <div className="relative">
                     <div className="aspect-[16/9] w-full bg-[#0b0f13]">
-                        {!loaded && <div className="w-full h-full animate-pulse bg-[#121821]" />}
+                        {!loaded && (
+                            <div className="absolute inset-0 grid place-items-center">
+                                <Spinner className="h-6 w-6 text-orange-300" />
+                            </div>
+                        )}
                         <img
                             src={src}
                             alt={title}
@@ -46,7 +68,7 @@ export default function GameCard({ game }) {
                                 if (idx < candidates.length - 1) setIdx((i) => i + 1);
                                 else setLoaded(true);
                             }}
-                            className={`w-full h-full object-cover ${loaded ? "block" : "hidden"}`}
+                            className={`w-full h-full object-cover ${loaded ? "block" : "opacity-0"}`}
                         />
                     </div>
                     <div className="pointer-events-none absolute inset-0 ring-0 group-hover:ring-2 ring-[#F4A52E]/50 transition" />
