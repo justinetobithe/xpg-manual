@@ -1,0 +1,35 @@
+{
+    "brand": {
+        "name": "XPG"
+    },
+    "titles": {
+        "manual": "Посібник XPG",
+        "gameRules": "Правила гри"
+    },
+    "search": {
+        "placeholder": "Пошук ігор…"
+    },
+    "list": {
+        "games": "Ігри",
+        "all": "Усі",
+        "showing": "Показано",
+        "in": "в",
+        "gamesWord": "ігри",
+        "for": "для",
+        "noResults": "Ігор не знайдено."
+    },
+    "actions": {
+        "openMenu": "Відкрити меню",
+        "clearFilters": "Очистити фільтри",
+        "back": "Назад",
+        "backToAll": "Повернутися до всіх ігор",
+        "closeMenu": "Закрити меню"
+    },
+    "footer": {
+        "manual": "Посібник"
+    },
+    "details": {
+        "noContent": "Немає деталей для цієї гри."
+    },
+    "loading": "Завантаження…"
+}

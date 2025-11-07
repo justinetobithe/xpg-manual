@@ -1,14 +1,8 @@
 import { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Spinner from "./Spinner";
 
-function stripHtml(s = "") {
-    return s.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
-}
-const basename = (p = "") => {
-    const parts = String(p).trim().split(/[/\\]+/);
-    return parts[parts.length - 1] || "";
-};
+const stripHtml = (s = "") => s.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+const basename = (p = "") => { const parts = String(p).trim().split(/[/\\]+/); return parts[parts.length - 1] || ""; };
 const buildVariants = (slug = "") => {
     const s = String(slug).trim();
     if (!s) return [];
@@ -17,14 +11,13 @@ const buildVariants = (slug = "") => {
     const under = s.replace(/-/g, "_");
     const all = [s, dash, under, s.toLowerCase(), dash.toLowerCase(), under.toLowerCase()];
     const exts = [".jpg", ".jpeg", ".png", ".webp"];
-    for (const name of all) for (const ext of exts) v.add(`/games/${encodeURIComponent(name)}${ext}`);
+    for (const n of all) for (const e of exts) v.add(`/games/${encodeURIComponent(n)}${e}`);
     return [...v];
 };
 
 export default function GameCard({ game }) {
     const title = game.iname1 || "Untitled";
-    const text = useMemo(() => stripHtml(game.itext || ""), [game.itext]);
-
+    useMemo(() => stripHtml(game.itext || ""), [game.itext]);
     const file = basename(game.img);
     const slug = (game.iurl || "").trim();
 
@@ -38,53 +31,35 @@ export default function GameCard({ game }) {
 
     const [idx, setIdx] = useState(0);
     const [loaded, setLoaded] = useState(false);
-
-    useEffect(() => {
-        setIdx(0);
-        setLoaded(false);
-    }, [candidates.join("|")]);
-
+    useEffect(() => { setIdx(0); setLoaded(false); }, [candidates.join("|")]);
     const src = candidates[idx];
 
     return (
         <Link
             to={`/games/${slug || game.iid}`}
-            className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F4A52E]/50 rounded-xl min-w-0"
+            className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded-xl"
         >
-            <article
-                className="
-          rounded-xl overflow-hidden bg-[#0f141a] border-2 border-[#A66C13]
-          ring-1 ring-[#F4A52E]/10 shadow-lg
-          hover:border-[#F4A52E] transition-colors
-          min-w-0 max-w-full
-        "
-            >
-                <div className="relative">
-                    <div className="aspect-[16/9] w-full bg-[#0b0f13] overflow-hidden">
+            <article className="group rounded-xl bg-transparent">
+                <div className="rounded-xl overflow-hidden border-2 border-primary-400 shadow-[0_10px_30px_rgba(0,0,0,.45)] transition">
+                    <div className="aspect-[16/9] w-full bg-black">
                         {!loaded && (
-                            <div className="absolute inset-0 grid place-items-center">
-                                <Spinner className="h-6 w-6 text-orange-300" />
-                            </div>
+                            <div className="grid h-full w-full place-items-center text-primary-300 font-extrabold">…</div>
                         )}
                         <img
                             src={src}
                             alt={title}
                             loading="lazy"
                             onLoad={() => setLoaded(true)}
-                            onError={() => {
-                                if (idx < candidates.length - 1) setIdx((i) => i + 1);
-                                else setLoaded(true);
-                            }}
-                            className={`block w-full h-full object-cover ${loaded ? "opacity-100" : "opacity-0"}`}
+                            onError={() => { if (idx < candidates.length - 1) setIdx((i) => i + 1); else setLoaded(true); }}
+                            className={`block h-full w-full object-cover ${loaded ? "opacity-100" : "opacity-0"}`}
                         />
                     </div>
 
-                    <div className="pointer-events-none absolute inset-0 ring-0 group-hover:ring-2 ring-[#F4A52E]/50 transition" />
-                </div>
-
-                <div className="p-4 min-w-0">
-                    <h2 className="text-lg font-semibold text-orange-300 line-clamp-1 break-words">{title}</h2>
-                    {text && <p className="text-sm text-gray-400 mt-2 line-clamp-3 break-words">{text}</p>}
+                    <div className="bg-black text-center border-t-2 border-primary-400 px-4 py-3">
+                        <h2 className="text-white text-lg md:text-xl font-extrabold tracking-wide line-clamp-1">
+                            {title}
+                        </h2>
+                    </div>
                 </div>
             </article>
         </Link>

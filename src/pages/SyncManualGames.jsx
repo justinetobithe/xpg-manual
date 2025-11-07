@@ -72,8 +72,8 @@
 //         <div className="min-h-screen bg-black text-white">
 //             <div className="max-w-5xl mx-auto px-6 py-8">
 //                 <div className="flex items-center justify-between mb-6">
-//                     <h1 className="text-2xl md:text-3xl font-bold text-orange-400">Sync Manual Games → Firestore</h1>
-//                     <Link to="/" className="text-sm text-gray-300 hover:text-orange-300 underline">Back to Home</Link>
+//                     <h1 className="text-2xl md:text-3xl font-bold text-primary-400">Sync Manual Games → Firestore</h1>
+//                     <Link to="/" className="text-sm text-gray-300 hover:text-primary-300 underline">Back to Home</Link>
 //                 </div>
 
 //                 <p className="text-sm text-gray-400 mb-4">

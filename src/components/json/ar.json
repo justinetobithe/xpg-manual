@@ -1,0 +1,35 @@
+{
+    "brand": {
+        "name": "إكس بي جي"
+    },
+    "titles": {
+        "manual": "دليل XPG",
+        "gameRules": "قواعد اللعبة"
+    },
+    "search": {
+        "placeholder": "ابحث عن الألعاب…"
+    },
+    "list": {
+        "games": "الألعاب",
+        "all": "الكل",
+        "showing": "عرض",
+        "in": "في",
+        "gamesWord": "ألعاب",
+        "for": "لـ",
+        "noResults": "لم يتم العثور على ألعاب."
+    },
+    "actions": {
+        "openMenu": "فتح القائمة",
+        "clearFilters": "مسح الفلاتر",
+        "back": "رجوع",
+        "backToAll": "العودة إلى جميع الألعاب",
+        "closeMenu": "إغلاق القائمة"
+    },
+    "footer": {
+        "manual": "الدليل"
+    },
+    "details": {
+        "noContent": "لا توجد تفاصيل متاحة لهذه اللعبة."
+    },
+    "loading": "جارٍ التحميل…"
+}

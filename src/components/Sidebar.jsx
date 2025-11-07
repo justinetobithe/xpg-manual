@@ -1,24 +1,25 @@
-export default function Sidebar({
-    games = [],
-    selected = "All",
-    onSelect = () => { },
-}) {
+import { useTranslation } from "react-i18next";
+
+export default function Sidebar({ games = [], selected = "All", onSelect = () => { } }) {
+    const { t } = useTranslation();
     const total = games.length;
 
     return (
-        <aside className="sticky top-20 self-start w-64 pr-6">
-            <h3 className="text-sm uppercase tracking-wide text-gray-400 mb-3">Games {total}</h3>
+        <aside className="sticky top-[84px] self-start w-full lg:w-64">
+            <h3 className="text-base md:text-lg uppercase tracking-wide text-gray-300 mb-3 font-bold">
+                {t("list.games")} {total}
+            </h3>
             <ul className="space-y-2">
                 <li>
                     <button
                         type="button"
                         onClick={() => onSelect("All")}
-                        className={`w-full text-left block px-2 py-1 rounded transition ${selected === "All"
-                                ? "text-orange-300 bg-orange-500/10"
-                                : "text-gray-200 hover:text-orange-300 hover:bg-orange-500/10"
+                        className={`w-full text-left block px-3 py-2.5 rounded-lg border text-base font-bold ${selected === "All"
+                                ? "border-[#F4A52E] text-primary-300 bg-[#1a2028]"
+                                : "border-[#2a3444] text-gray-200 hover:text-primary-300 hover:border-[#A66C13]"
                             }`}
                     >
-                        All ({total})
+                        {t("list.all")} ({total})
                     </button>
                 </li>
 
@@ -30,9 +31,9 @@ export default function Sidebar({
                             <button
                                 type="button"
                                 onClick={() => onSelect(g.tag)}
-                                className={`w-full text-left block px-2 py-1 rounded transition ${selected === g.tag
-                                        ? "text-orange-300 bg-orange-500/10"
-                                        : "text-gray-200 hover:text-orange-300 hover:bg-orange-500/10"
+                                className={`w-full text-left block px-3 py-2.5 rounded-lg border text-base font-bold ${selected === g.tag
+                                        ? "border-[#F4A52E] text-primary-300 bg-[#1a2028]"
+                                        : "border-[#2a3444] text-gray-200 hover:text-primary-300 hover:border-[#A66C13]"
                                     }`}
                             >
                                 {g.name}

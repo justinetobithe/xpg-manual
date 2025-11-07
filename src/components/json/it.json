@@ -1,0 +1,35 @@
+{
+    "brand": {
+        "name": "XPG"
+    },
+    "titles": {
+        "manual": "Manuale XPG",
+        "gameRules": "Regole del gioco"
+    },
+    "search": {
+        "placeholder": "Cerca giochi…"
+    },
+    "list": {
+        "games": "Giochi",
+        "all": "Tutti",
+        "showing": "Mostrando",
+        "in": "in",
+        "gamesWord": "giochi",
+        "for": "per",
+        "noResults": "Nessun gioco trovato."
+    },
+    "actions": {
+        "openMenu": "Apri menu",
+        "clearFilters": "Cancella filtri",
+        "back": "Indietro",
+        "backToAll": "Torna a tutti i giochi",
+        "closeMenu": "Chiudi menu"
+    },
+    "footer": {
+        "manual": "Manuale"
+    },
+    "details": {
+        "noContent": "Nessun dettaglio disponibile per questo gioco."
+    },
+    "loading": "Caricamento…"
+}

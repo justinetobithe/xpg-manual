@@ -1,0 +1,35 @@
+{
+    "brand": {
+        "name": "XPG"
+    },
+    "titles": {
+        "manual": "XPG 手册",
+        "gameRules": "游戏规则"
+    },
+    "search": {
+        "placeholder": "搜索游戏…"
+    },
+    "list": {
+        "games": "游戏",
+        "all": "全部",
+        "showing": "显示",
+        "in": "在",
+        "gamesWord": "游戏",
+        "for": "为",
+        "noResults": "未找到游戏。"
+    },
+    "actions": {
+        "openMenu": "打开菜单",
+        "clearFilters": "清除筛选",
+        "back": "返回",
+        "backToAll": "返回所有游戏",
+        "closeMenu": "关闭菜单"
+    },
+    "footer": {
+        "manual": "手册"
+    },
+    "details": {
+        "noContent": "此游戏暂无详细信息。"
+    },
+    "loading": "加载中…"
+}

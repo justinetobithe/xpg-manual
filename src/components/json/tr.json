@@ -1,0 +1,35 @@
+{
+    "brand": {
+        "name": "XPG"
+    },
+    "titles": {
+        "manual": "XPG Kılavuzu",
+        "gameRules": "Oyun Kuralları"
+    },
+    "search": {
+        "placeholder": "Oyunları ara…"
+    },
+    "list": {
+        "games": "Oyunlar",
+        "all": "Tümü",
+        "showing": "Gösteriliyor",
+        "in": "içinde",
+        "gamesWord": "oyunlar",
+        "for": "için",
+        "noResults": "Oyun bulunamadı."
+    },
+    "actions": {
+        "openMenu": "Menüyü aç",
+        "clearFilters": "Filtreleri temizle",
+        "back": "Geri",
+        "backToAll": "Tüm oyunlara dön",
+        "closeMenu": "Menüyü kapat"
+    },
+    "footer": {
+        "manual": "Kılavuz"
+    },
+    "details": {
+        "noContent": "Bu oyun için detay bulunamadı."
+    },
+    "loading": "Yükleniyor…"
+}

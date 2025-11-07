@@ -1,0 +1,35 @@
+{
+    "brand": {
+        "name": "XPG"
+    },
+    "titles": {
+        "manual": "คู่มือ XPG",
+        "gameRules": "กติกาเกม"
+    },
+    "search": {
+        "placeholder": "ค้นหาเกม…"
+    },
+    "list": {
+        "games": "เกม",
+        "all": "ทั้งหมด",
+        "showing": "แสดง",
+        "in": "ใน",
+        "gamesWord": "เกม",
+        "for": "สำหรับ",
+        "noResults": "ไม่พบเกม."
+    },
+    "actions": {
+        "openMenu": "เปิดเมนู",
+        "clearFilters": "ล้างตัวกรอง",
+        "back": "กลับ",
+        "backToAll": "กลับไปที่เกมทั้งหมด",
+        "closeMenu": "ปิดเมนู"
+    },
+    "footer": {
+        "manual": "คู่มือ"
+    },
+    "details": {
+        "noContent": "ไม่มีรายละเอียดสำหรับเกมนี้."
+    },
+    "loading": "กำลังโหลด…"
+}
