@@ -58,6 +58,45 @@ function SidebarList({ games = [], selected = "All", onSelect = () => { }, onAft
     );
 }
 
+function SkeletonSidebar() {
+    return (
+        <div className="sticky top-[84px] self-start w-full lg:w-64">
+            <div className="p-4 animate-pulse">
+                <div className="h-5 w-40 bg-gray-800 rounded mb-3" />
+                <ul className="space-y-2">
+                    {Array.from({ length: 10 }).map((_, i) => (
+                        <li key={i} className="h-10 bg-gray-800/70 rounded-lg" />
+                    ))}
+                </ul>
+            </div>
+        </div>
+    );
+}
+
+function SkeletonCard() {
+    return (
+        <article className="rounded-xl border-2 border-primary-400 shadow-[0_10px_30px_rgba(0,0,0,.45)] overflow-hidden">
+            <div className="aspect-[16/9] w-full bg-gray-800 animate-pulse" />
+            <div className="bg-black border-t-2 border-primary-400 px-4 py-3">
+                <div className="h-5 bg-gray-800 rounded w-3/4 mx-auto animate-pulse" />
+            </div>
+        </article>
+    );
+}
+
+function SkeletonDrawerList() {
+    return (
+        <div className="p-4 animate-pulse">
+            <div className="h-5 w-32 bg-gray-800 rounded mb-3" />
+            <ul className="space-y-2">
+                {Array.from({ length: 10 }).map((_, i) => (
+                    <li key={i} className="h-10 bg-gray-800/70 rounded-lg" />
+                ))}
+            </ul>
+        </div>
+    );
+}
+
 export default function Home() {
     const { t } = useTranslation();
     const [games, setGames] = useState([]);
@@ -66,26 +105,35 @@ export default function Home() {
     const [lang, setLang] = useState("EN");
     const [q, setQ] = useState("");
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const [loading, setLoading] = useState(true);
     const inputRef = useRef(null);
 
     useEffect(() => {
         (async () => {
+            setLoading(true);
             const qRef = query(collection(db, "manual-games"), orderBy("name"));
             const snap = await getDocs(qRef);
             const list = snap.docs.map((d) => {
                 const v = d.data() || {};
-                return { iid: d.id, iname1: v.name || "", iurl: v.tag || d.id, itext: v.text || "", img: v.image || "" };
+                return {
+                    id: d.id,
+                    name: v.name || "",
+                    tag: v.tag || d.id,
+                    text: v.text || "",
+                    image: v.image || "",
+                };
             });
             setGames(list);
-            setSidebarGames(list.map((g) => ({ name: g.iname1, tag: g.iurl })));
+            setSidebarGames(list.map(({ name, tag }) => ({ name, tag })));
+            setLoading(false);
         })();
     }, []);
 
     const filtered = useMemo(() => {
         const term = q.trim().toLowerCase();
         return games.filter((g) => {
-            const matchesSearch = !term || `${g.iname1} ${g.itext}`.toLowerCase().includes(term);
-            const matchesTag = selectedTag === "All" || g.iurl === selectedTag;
+            const matchesSearch = !term || `${g.name} ${g.text}`.toLowerCase().includes(term);
+            const matchesTag = selectedTag === "All" || g.tag === selectedTag;
             return matchesSearch && matchesTag;
         });
     }, [games, q, selectedTag]);
@@ -167,16 +215,19 @@ export default function Home() {
 
                 <div className="mt-8 grid grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)] gap-6">
                     <div className="hidden lg:block">
-                        <Sidebar games={sidebarGames} selected={selectedTag} onSelect={setSelectedTag} />
+                        {loading ? (
+                            <SkeletonSidebar />
+                        ) : (
+                            <Sidebar games={sidebarGames} selected={selectedTag} onSelect={setSelectedTag} />
+                        )}
                     </div>
 
                     <main>
                         <div className="flex items-center gap-2 mb-4 text-base md:text-lg text-gray-300 font-bold">
-                            {t("list.showing")}{" "}
-                            <span className="text-primary-300 mx-1">{filtered.length}</span>
-                            {selectedTag !== "All" ? `${t("list.in")} “${selectedTag}”` : t("list.gamesWord")}
-                            {q.trim() ? ` ${t("list.for")} “${q.trim()}”` : ""}
-                            {(selectedTag !== "All" || q.trim()) && (
+                            {t("list.showing")} <span className="text-primary-300 mx-1">{loading ? "…" : filtered.length}</span>
+                            {!loading && (selectedTag !== "All" ? `${t("list.in")} “${selectedTag}”` : t("list.gamesWord"))}
+                            {!loading && (q.trim() ? ` ${t("list.for")} “${q.trim()}”` : "")}
+                            {!loading && (selectedTag !== "All" || q.trim()) && (
                                 <button
                                     onClick={() => {
                                         setSelectedTag("All");
@@ -191,12 +242,12 @@ export default function Home() {
                         </div>
 
                         <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                            {filtered.map((g) => (
-                                <GameCard key={g.iurl} game={g} />
-                            ))}
+                            {loading
+                                ? Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)
+                                : filtered.map((g) => <GameCard key={g.tag} game={g} />)}
                         </div>
 
-                        {filtered.length === 0 && (
+                        {!loading && filtered.length === 0 && (
                             <div className="text-gray-300 text-center py-12 text-lg font-bold">
                                 {t("list.noResults")}
                             </div>
@@ -223,12 +274,16 @@ export default function Home() {
                                     <X className="h-5 w-5" />
                                 </button>
                             </div>
-                            <SidebarList
-                                games={sidebarGames}
-                                selected={selectedTag}
-                                onSelect={setSelectedTag}
-                                onAfterSelect={() => setDrawerOpen(false)}
-                            />
+                            {loading ? (
+                                <SkeletonDrawerList />
+                            ) : (
+                                <SidebarList
+                                    games={sidebarGames}
+                                    selected={selectedTag}
+                                    onSelect={setSelectedTag}
+                                    onAfterSelect={() => setDrawerOpen(false)}
+                                />
+                            )}
                         </Dialog.Panel>
                     </div>
                 </Dialog>
