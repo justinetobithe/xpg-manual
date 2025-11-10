@@ -17,7 +17,7 @@ export default function GameCard({ game }) {
     return (
         <Link
             to={`/games/${slug}`}
-            className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded-xl"
+            className="focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded-xl"
         >
             <article className="group rounded-xl bg-transparent">
                 <div className="rounded-xl overflow-hidden border-2 border-primary-400 shadow-[0_10px_30px_rgba(0,0,0,.45)] transition">

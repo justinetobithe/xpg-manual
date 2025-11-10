@@ -1,21 +1,105 @@
 @import "tailwindcss";
- 
+
 @theme {
-  --color-primary:      #FF8904;
-  --color-primary-50:   #FFF3E7;
-  --color-primary-100:  #FFE7CF;
-  --color-primary-200:  #FFCF9F;
-  --color-primary-300:  #FFB670;
-  --color-primary-400:  #FF9E40;
-  --color-primary-500:  #FF8904;
-  --color-primary-600:  #E67900;
-  --color-primary-700:  #B35E00;
-  --color-primary-800:  #804300;
-  --color-primary-900:  #4C2800;
+  --color-primary: #ff8904;
+  --color-primary-50: #fff3e7;
+  --color-primary-100: #ffe7cf;
+  --color-primary-200: #ffcf9f;
+  --color-primary-300: #ffb670;
+  --color-primary-400: #ff9e40;
+  --color-primary-500: #ff8904;
+  --color-primary-600: #e67900;
+  --color-primary-700: #b35e00;
+  --color-primary-800: #804300;
+  --color-primary-900: #4c2800;
 }
- 
+
 @layer utilities {
   body {
     @apply bg-slate-900 text-slate-100;
+  }
+}
+
+@layer components {
+  .view {
+    @apply grid gap-4 my-4;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 768px) {
+    .view {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .border2 {
+    @apply bg-[#0b1116] border border-[#2a3444] rounded-2xl p-1 shadow-[0_0_0_1px_rgba(244,165,46,.06)];
+  }
+  .border {
+    @apply overflow-hidden rounded-xl border border-primary-400;
+  }
+  .border img {
+    @apply block w-full h-auto rounded-lg;
+  }
+
+  .under-table {
+    @apply mt-3 text-sm text-slate-300 italic;
+  }
+
+  .table1,
+  .table3 {
+    @apply my-5;
+  }
+  .table1 .border2,
+  .table3 .border2 {
+    @apply bg-[#0b1116] border border-[#2a3444] rounded-2xl p-1;
+  }
+
+  .table1 table,
+  .table3 table,
+  .table1 table *,
+  .table3 table * {
+    border-collapse: collapse;
+  }
+  .table1 table,
+  .table3 table {
+    @apply w-full text-left;
+  }
+  .table1 td,
+  .table1 th,
+  .table3 td,
+  .table3 th {
+    @apply p-3 align-top border border-[#2a3444] text-slate-100;
+  }
+  .table1 tr.top td,
+  .table1 tr.top th,
+  .table3 tr.top td,
+  .table3 tr.top th {
+    @apply bg-[#141a22] font-bold text-primary-300;
+  }
+
+  .fsize td,
+  .fsize th {
+    @apply text-base md:text-lg;
+  }
+
+  .layout {
+    @apply grid gap-6 my-6;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 768px) {
+    .layout {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .block {
+    @apply grid items-center gap-4 bg-[#0b1116] border border-[#2a3444] rounded-xl p-3;
+    grid-template-columns: minmax(0, 200px) 1fr;
+  }
+  .wrap {
+    @apply text-slate-100;
+  }
+
+  p span {
+    @apply text-primary-300 font-semibold;
   }
 }

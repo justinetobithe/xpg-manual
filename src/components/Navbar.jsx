@@ -39,11 +39,11 @@ export default function Navbar({ title = "" }) {
 
                 <div className="text-center">
                     {title ? (
-                        <span className="block mx-auto max-w-[70vw] text-lg sm:text-2xl md:text-3xl font-bold text-primary-300 truncate">
+                        <span className="mx-auto max-w-[70vw] text-lg sm:text-2xl md:text-3xl font-bold text-primary-300 truncate">
                             {title}
                         </span>
                     ) : (
-                        <span className="block text-lg sm:text-2xl md:text-3xl font-bold text-primary-300">
+                        <span className="text-lg sm:text-2xl md:text-3xl font-bold text-primary-300">
                             {t("titles.gameRules")}
                         </span>
                     )}
