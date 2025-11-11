@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState, Fragment } from "react";
-import { collection, getDocs, query, orderBy } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../firebase";
 import Navbar from "@/components/Navbar";
 import GameCard from "@/components/GameCard";
@@ -10,7 +10,7 @@ import { Search, X, Menu } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 function SidebarList({ games = [], selected = "All", onSelect = () => { }, onAfterSelect = () => { } }) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const total = games.length;
     return (
         <div className="p-4">
@@ -35,7 +35,21 @@ function SidebarList({ games = [], selected = "All", onSelect = () => { }, onAft
                 </li>
                 {games
                     .slice()
-                    .sort((a, b) => a.name.localeCompare(b.name))
+                    .sort((a, b) =>
+                        (
+                            (a.translation?.[i18n.language] ??
+                                a.translation?.[(i18n.language || "").split("-")[0]])?.name ??
+                            a.name ??
+                            ""
+                        ).localeCompare(
+                            (
+                                (b.translation?.[i18n.language] ??
+                                    b.translation?.[(i18n.language || "").split("-")[0]])?.name ??
+                                b.name ??
+                                ""
+                            )
+                        )
+                    )
                     .map((g) => (
                         <li key={g.tag}>
                             <button
@@ -49,7 +63,8 @@ function SidebarList({ games = [], selected = "All", onSelect = () => { }, onAft
                                         : "border-[#2a3444] text-gray-200 hover:text-primary-300 hover:border-[#A66C13]"
                                     }`}
                             >
-                                {g.name}
+                                {(g.translation?.[i18n.language] ??
+                                    g.translation?.[(i18n.language || "").split("-")[0]])?.name || g.name}
                             </button>
                         </li>
                     ))}
@@ -111,20 +126,23 @@ export default function Home() {
     useEffect(() => {
         (async () => {
             setLoading(true);
-            const qRef = query(collection(db, "manual-games"), orderBy("name"));
+            const qRef = query(collection(db, "manual-games"), where("visible", "==", true));
             const snap = await getDocs(qRef);
-            const list = snap.docs.map((d) => {
-                const v = d.data() || {};
-                return {
-                    id: d.id,
-                    name: v.name || "",
-                    tag: v.tag || d.id,
-                    text: v.text || "",
-                    image: v.image || "",
-                };
-            });
+            const list = snap.docs
+                .map((d) => {
+                    const v = d.data() || {};
+                    return {
+                        id: d.id,
+                        name: v.name || "",
+                        tag: v.tag || d.id,
+                        text: v.text || "",
+                        image: v.image || "",
+                        translation: v.translation || {},
+                    };
+                })
+                .sort((a, b) => a.name.localeCompare(b.name));
             setGames(list);
-            setSidebarGames(list.map(({ name, tag }) => ({ name, tag })));
+            setSidebarGames(list.map(({ name, tag, translation }) => ({ name, tag, translation })));
             setLoading(false);
         })();
     }, []);
@@ -158,9 +176,7 @@ export default function Home() {
                         >
                             <Menu className="h-6 w-6" />
                         </button>
-                        <h1 className="text-4xl md:text-5xl font-extrabold text-primary-400">
-                            {t("titles.manual")}
-                        </h1>
+                        <h1 className="text-4xl md:text-5xl font-extrabold text-primary-400">{t("titles.manual")}</h1>
                     </div>
 
                     <div className="relative hidden lg:block w-[26rem]">
@@ -248,9 +264,7 @@ export default function Home() {
                         </div>
 
                         {!loading && filtered.length === 0 && (
-                            <div className="text-gray-300 text-center py-12 text-lg font-bold">
-                                {t("list.noResults")}
-                            </div>
+                            <div className="text-gray-300 text-center py-12 text-lg font-bold">{t("list.noResults")}</div>
                         )}
 
                         <Footer />

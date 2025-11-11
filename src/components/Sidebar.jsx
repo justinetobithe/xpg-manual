@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 
 export default function Sidebar({ games = [], selected = "All", onSelect = () => { } }) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const total = games.length;
 
     return (
@@ -25,7 +25,21 @@ export default function Sidebar({ games = [], selected = "All", onSelect = () =>
 
                 {games
                     .slice()
-                    .sort((a, b) => a.name.localeCompare(b.name))
+                    .sort((a, b) =>
+                        (
+                            (a.translation?.[i18n.language] ??
+                                a.translation?.[(i18n.language || "").split("-")[0]])?.name ||
+                            a.name ||
+                            ""
+                        ).localeCompare(
+                            (
+                                (b.translation?.[i18n.language] ??
+                                    b.translation?.[(i18n.language || "").split("-")[0]])?.name ||
+                                b.name ||
+                                ""
+                            )
+                        )
+                    )
                     .map((g) => (
                         <li key={g.tag}>
                             <button
@@ -36,7 +50,8 @@ export default function Sidebar({ games = [], selected = "All", onSelect = () =>
                                     : "border-[#2a3444] text-gray-200 hover:text-primary-300 hover:border-[#A66C13]"
                                     }`}
                             >
-                                {g.name}
+                                {(g.translation?.[i18n.language] ??
+                                    g.translation?.[(i18n.language || "").split("-")[0]])?.name || g.name}
                             </button>
                         </li>
                     ))}

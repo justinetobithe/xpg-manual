@@ -61,11 +61,10 @@ function SkeletonContent() {
 }
 
 export default function GameDetails() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { iurl } = useParams();
     const navigate = useNavigate();
     const [game, setGame] = useState(null);
-    const [lang, setLang] = useState("EN");
     const [sidebarGames, setSidebarGames] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -98,20 +97,36 @@ export default function GameDetails() {
             setGame(foundGame);
 
             const qs = await getDocs(query(collection(db, "manual-games"), orderBy("name")));
-            setSidebarGames(qs.docs.map((d) => {
-                const v = d.data() || {};
-                return { name: v.name || "", tag: v.tag || d.id };
-            }));
+            setSidebarGames(
+                qs.docs.map((d) => {
+                    const v = d.data() || {};
+                    return { name: v.name || "", tag: v.tag || d.id };
+                })
+            );
 
             setLoading(false);
         })();
     }, [iurl]);
 
-    const rewrittenHTML = useMemo(() => rewriteImagesToGames(game?.text || ""), [game?.text]);
+    const baseLang = (i18n.language || "").split("-")[0];
+    const tr = game?.translation || {};
+
+    const currentTr = tr[i18n.language] ?? tr[baseLang] ?? null;
+
+    const title = currentTr?.name ?? game?.name ?? "";
+
+    const sourceText = currentTr?.text ?? game?.text ?? "";
+
+    const rewrittenHTML = useMemo(
+        () => rewriteImagesToGames(sourceText),
+        [sourceText]
+    );
+
+    const isRTL = /^ar|^he|^fa|^ur/i.test(i18n.language || "");
 
     return (
-        <div className="bg-black min-h-screen text-white">
-            <Navbar onLang={setLang} lang={lang} title={game?.name || ""} />
+        <div className="bg-black min-h-screen text-white" dir={isRTL ? "rtl" : "ltr"}>
+            <Navbar title={title} />
 
             <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-6 pb-16">
                 <div className="mb-4 flex items-center gap-4">
@@ -140,7 +155,11 @@ export default function GameDetails() {
                         {loading && <SkeletonContent />}
 
                         {!loading && !!rewrittenHTML && (
-                            <div className="prose prose-invert max-w-none mt-2 border border-[#A66C13] rounded-2xl p-5 sm:p-6 bg-[#0f141a] shadow-[0_0_0_1px_rgba(244,165,46,.08)] font-bold prose-p:text-lg prose-li:text-lg prose-strong:font-extrabold prose-headings:text-primary-300 prose-a:text-primary-300">
+                            <div
+                                key={(i18n.language || "default")}
+                                className="prose prose-invert max-w-none mt-2 border border-[#A66C13] rounded-2xl p-5 sm:p-6 bg-[#0f141a] shadow-[0_0_0_1px_rgba(244,165,46,.08)] font-bold prose-p:text-lg prose-li:text-lg prose-strong:font-extrabold prose-headings:text-primary-300 prose-a:text-primary-300"
+                                style={{ textAlign: isRTL ? "right" : "left" }}
+                            >
                                 <div className="font-bold" dangerouslySetInnerHTML={{ __html: rewrittenHTML }} />
                             </div>
                         )}

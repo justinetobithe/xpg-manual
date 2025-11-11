@@ -1,18 +1,29 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
-
-function buildImgSrc(image = "") {
-    const src = String(image || "").trim();
-    if (!src) return "/games/placeholder.jpg";
-    if (/^(https?:|data:|blob:|\/\/|\/games\/)/i.test(src)) return src;
-    return `/games/${encodeURIComponent(src)}`;
-}
+import { useTranslation } from "react-i18next";
 
 export default function GameCard({ game }) {
-    const title = game?.name || "Untitled";
+    const { i18n } = useTranslation();
     const slug = game?.tag || game?.id || "";
-    const initialSrc = useMemo(() => buildImgSrc(game?.image), [game?.image]);
+
+    const initialSrc = useMemo(() => {
+        const img = String(game?.image || "").trim();
+        if (!img) return "/games/placeholder.jpg";
+        if (/^(https?:|data:|blob:|\/\/)/i.test(img)) return img;
+        return `/games/${encodeURIComponent(img)}`;
+    }, [game?.image]);
+
     const [imgSrc, setImgSrc] = useState(initialSrc);
+
+    useEffect(() => {
+        setImgSrc(initialSrc);
+    }, [initialSrc]);
+
+    const title =
+        (game?.translation?.[i18n.language] ??
+            game?.translation?.[(i18n.language || "").split("-")[0]])?.name ||
+        game?.name ||
+        "";
 
     return (
         <Link
