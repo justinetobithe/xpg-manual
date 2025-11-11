@@ -1,8 +1,10 @@
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 export default function Sidebar({ games = [], selected = "All", onSelect = () => { } }) {
     const { t, i18n } = useTranslation();
     const total = games.length;
+    const navigate = useNavigate();
 
     return (
         <aside className="sticky top-[84px] self-start w-full lg:w-64 mb-5">
@@ -17,15 +19,19 @@ export default function Sidebar({ games = [], selected = "All", onSelect = () =>
                     <li>
                         <button
                             type="button"
-                            onClick={() => onSelect("All")}
+                            onClick={() => {
+                                onSelect("All");
+                                navigate("/");
+                            }}
                             className={`w-full text-left block px-3 py-3 rounded-lg border text-[15px] md:text-base font-extrabold ${selected === "All"
-                                ? "border-[#F4A52E] text-primary-300 bg-[#1a2028]"
-                                : "border-[#2a3444] text-gray-100 hover:text-primary-300 hover:border-[#A66C13]"
+                                    ? "border-[#F4A52E] text-primary-300 bg-[#1a2028]"
+                                    : "border-[#2a3444] text-gray-100 hover:text-primary-300 hover:border-[#A66C13]"
                                 }`}
                         >
                             {t("list.all")} ({total})
                         </button>
                     </li>
+
                     {games
                         .slice()
                         .sort((a, b) =>
@@ -49,8 +55,8 @@ export default function Sidebar({ games = [], selected = "All", onSelect = () =>
                                     type="button"
                                     onClick={() => onSelect(g.tag)}
                                     className={`w-full text-left block px-3 py-3 rounded-lg border text-[15px] md:text-base font-extrabold ${selected === g.tag
-                                        ? "border-[#F4A52E] text-primary-300 bg-[#1a2028]"
-                                        : "border-[#2a3444] text-gray-100 hover:text-primary-300 hover:border-[#A66C13]"
+                                            ? "border-[#F4A52E] text-primary-300 bg-[#1a2028]"
+                                            : "border-[#2a3444] text-gray-100 hover:text-primary-300 hover:border-[#A66C13]"
                                         }`}
                                 >
                                     {(g.translation?.[i18n.language] ??
