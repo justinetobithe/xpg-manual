@@ -5,16 +5,12 @@ export default function Sidebar({ games = [], selected = "All", onSelect = () =>
     const total = games.length;
 
     return (
-        <aside className="sticky top-[84px] self-start w-full lg:w-64 mb-[20px]">
-            <h3 className="text-base md:text-lg uppercase tracking-wide text-gray-300 mb-3 font-bold">
+        <aside className="sticky top-[84px] self-start w-full lg:w-64 mb-5">
+            <h3 className="text-xl uppercase tracking-wide text-gray-200 mb-4 font-extrabold">
                 {t("list.games")} {total}
             </h3>
-
             <div
-                className="
-          max-h-[calc(100vh-84px-80px)] overflow-y-auto
-          lg:max-h-none lg:overflow-visible
-        "
+                className="max-h-[calc(100vh-84px-80px)] overflow-y-auto lg:max-h-none lg:overflow-visible"
                 style={{ WebkitOverflowScrolling: "touch" }}
             >
                 <ul className="space-y-2">
@@ -22,15 +18,14 @@ export default function Sidebar({ games = [], selected = "All", onSelect = () =>
                         <button
                             type="button"
                             onClick={() => onSelect("All")}
-                            className={`w-full text-left block px-3 py-2.5 rounded-lg border text-base font-bold ${selected === "All"
+                            className={`w-full text-left block px-3 py-3 rounded-lg border text-[15px] md:text-base font-extrabold ${selected === "All"
                                 ? "border-[#F4A52E] text-primary-300 bg-[#1a2028]"
-                                : "border-[#2a3444] text-gray-200 hover:text-primary-300 hover:border-[#A66C13]"
+                                : "border-[#2a3444] text-gray-100 hover:text-primary-300 hover:border-[#A66C13]"
                                 }`}
                         >
                             {t("list.all")} ({total})
                         </button>
                     </li>
-
                     {games
                         .slice()
                         .sort((a, b) =>
@@ -53,9 +48,9 @@ export default function Sidebar({ games = [], selected = "All", onSelect = () =>
                                 <button
                                     type="button"
                                     onClick={() => onSelect(g.tag)}
-                                    className={`w-full text-left block px-3 py-2.5 rounded-lg border text-base font-bold ${selected === g.tag
+                                    className={`w-full text-left block px-3 py-3 rounded-lg border text-[15px] md:text-base font-extrabold ${selected === g.tag
                                         ? "border-[#F4A52E] text-primary-300 bg-[#1a2028]"
-                                        : "border-[#2a3444] text-gray-200 hover:text-primary-300 hover:border-[#A66C13]"
+                                        : "border-[#2a3444] text-gray-100 hover:text-primary-300 hover:border-[#A66C13]"
                                         }`}
                                 >
                                     {(g.translation?.[i18n.language] ??
