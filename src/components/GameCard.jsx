@@ -38,8 +38,8 @@ export default function GameCard({ game }) {
                             className="block h-full w-full object-cover"
                         />
                     </div>
-                    <div className="bg-black text-center border-t-2 border-primary-400 px-4 py-3 min-h-[60px] flex items-center justify-center">
-                        <h2 className="text-white text-xl font-black tracking-wide leading-snug break-words line-clamp-2">
+                    <div className="bg-black text-center border-t-2 border-primary-400 px-4 py-4 min-h-[68px] flex items-center justify-center">
+                        <h2 className="text-white text-2xl md:text-3xl font-black tracking-wide leading-snug break-words line-clamp-2">
                             {title}
                         </h2>
                     </div>

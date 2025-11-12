@@ -14,7 +14,7 @@ function SidebarList({ games = [], selected = "All", onSelect = () => { }, onAft
     const total = games.length;
     return (
         <div className="p-4">
-            <h3 className="text-xl uppercase tracking-wide text-gray-200 mb-4 font-extrabold">
+            <h3 className="text-2xl md:text-3xl uppercase tracking-wide text-gray-200 mb-4 font-extrabold">
                 {t("list.games")} {total}
             </h3>
             <ul className="space-y-2">
@@ -25,7 +25,7 @@ function SidebarList({ games = [], selected = "All", onSelect = () => { }, onAft
                             onSelect("All");
                             onAfterSelect();
                         }}
-                        className={`w-full text-left block px-3 py-3 rounded-lg border text-[15px] md:text-base font-extrabold ${selected === "All"
+                        className={`w-full text-left block px-4 py-3 rounded-lg border text-lg md:text-xl font-extrabold ${selected === "All"
                             ? "border-[#F4A52E] text-primary-300 bg-[#1a2028]"
                             : "border-[#2a3444] text-gray-100 hover:text-primary-300 hover:border-[#A66C13]"
                             }`}
@@ -58,7 +58,7 @@ function SidebarList({ games = [], selected = "All", onSelect = () => { }, onAft
                                     onSelect(g.tag);
                                     onAfterSelect();
                                 }}
-                                className={`w-full text-left block px-3 py-3 rounded-lg border text-base font-extrabold ${selected === g.tag
+                                className={`w-full text-left block px-4 py-3 rounded-lg border text-lg md:text-xl font-extrabold ${selected === g.tag
                                     ? "border-[#F4A52E] text-primary-300 bg-[#1a2028]"
                                     : "border-[#2a3444] text-gray-100 hover:text-primary-300 hover:border-[#A66C13]"
                                     }`}
@@ -77,10 +77,10 @@ function SkeletonSidebar() {
     return (
         <div className="sticky top-[84px] self-start w-full lg:w-64">
             <div className="p-4 animate-pulse">
-                <div className="h-6 w-44 bg-gray-800 rounded mb-4" />
+                <div className="h-7 w-48 bg-gray-800 rounded mb-4" />
                 <ul className="space-y-2">
                     {Array.from({ length: 10 }).map((_, i) => (
-                        <li key={i} className="h-11 bg-gray-800/70 rounded-lg" />
+                        <li key={i} className="h-12 bg-gray-800/70 rounded-lg" />
                     ))}
                 </ul>
             </div>
@@ -92,8 +92,8 @@ function SkeletonCard() {
     return (
         <article className="rounded-xl border-2 border-primary-400 shadow-[0_10px_30px_rgba(0,0,0,.45)] overflow-hidden">
             <div className="aspect-[16/9] w-full bg-gray-800 animate-pulse" />
-            <div className="bg-black border-t-2 border-primary-400 px-4 py-4">
-                <div className="h-6 bg-gray-800 rounded w-3/4 mx-auto animate-pulse" />
+            <div className="bg-black border-t-2 border-primary-400 px-4 py-5">
+                <div className="h-7 bg-gray-800 rounded w-3/4 mx-auto animate-pulse" />
             </div>
         </article>
     );
@@ -102,10 +102,10 @@ function SkeletonCard() {
 function SkeletonDrawerList() {
     return (
         <div className="p-4 animate-pulse">
-            <div className="h-6 w-36 bg-gray-800 rounded mb-4" />
+            <div className="h-7 w-40 bg-gray-800 rounded mb-4" />
             <ul className="space-y-2">
                 {Array.from({ length: 10 }).map((_, i) => (
-                    <li key={i} className="h-11 bg-gray-800/70 rounded-lg" />
+                    <li key={i} className="h-12 bg-gray-800/70 rounded-lg" />
                 ))}
             </ul>
         </div>
@@ -121,7 +121,7 @@ export default function Home() {
     const [q, setQ] = useState("");
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [loading, setLoading] = useState(true);
-    const inputRef = useRef(null);
+    const inputRef = useRef < HTMLInputElement | null > (null);
 
     useEffect(() => {
         (async () => {
@@ -171,18 +171,18 @@ export default function Home() {
                         <button
                             type="button"
                             onClick={() => setDrawerOpen(true)}
-                            className="lg:hidden inline-flex items-center justify-center h-11 w-11 rounded-md border border-[#A66C13] text-gray-100 hover:text-primary-300 hover:bg-orange-500/10"
+                            className="lg:hidden inline-flex items-center justify-center h-12 w-12 rounded-md border border-[#A66C13] text-gray-100 hover:text-primary-300 hover:bg-orange-500/10"
                             aria-label={t("actions.openMenu")}
                         >
-                            <Menu className="h-6 w-6" />
+                            <Menu className="h-7 w-7" />
                         </button>
-                        <h1 className="text-[28px] md:text-5xl font-extrabold text-primary-400 leading-tight">
+                        <h1 className="text-4xl md:text-6xl font-extrabold text-primary-400 leading-tight">
                             {t("titles.manual")}
                         </h1>
                     </div>
 
-                    <div className="relative hidden lg:block w-[26rem]">
-                        <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                    <div className="relative hidden lg:block w-[30rem]">
+                        <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-6 w-6 text-gray-400" />
                         <input
                             ref={inputRef}
                             value={q}
@@ -191,16 +191,16 @@ export default function Home() {
                                 if (e.key === "Escape") clearSearch();
                             }}
                             placeholder={t("search.placeholder")}
-                            className="w-full bg-[#0f141a] border border-[#A66C13] focus:border-[#F4A52E] outline-none rounded-lg pl-10 pr-10 py-3 text-[15px] md:text-base font-extrabold text-gray-100"
+                            className="w-full bg-[#0f141a] border border-[#A66C13] focus:border-[#F4A52E] outline-none rounded-lg pl-12 pr-12 py-3 text-lg md:text-xl font-extrabold text-gray-100"
                         />
                         {q && (
                             <button
                                 type="button"
                                 onClick={clearSearch}
-                                className="absolute right-1.5 top-1/2 -translate-y-1/2 inline-flex items-center justify-center h-8 w-8 rounded-md text-gray-300 hover:text-primary-300 hover:bg-orange-500/10"
+                                className="absolute right-1.5 top-1/2 -translate-y-1/2 inline-flex items-center justify-center h-9 w-9 rounded-md text-gray-300 hover:text-primary-300 hover:bg-orange-500/10"
                                 aria-label={t("actions.clearFilters")}
                             >
-                                <X className="h-5 w-5" />
+                                <X className="h-6 w-6" />
                             </button>
                         )}
                     </div>
@@ -208,7 +208,7 @@ export default function Home() {
 
                 <div className="lg:hidden mt-4">
                     <div className="relative">
-                        <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                        <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-6 w-6 text-gray-400" />
                         <input
                             value={q}
                             onChange={(e) => setQ(e.target.value)}
@@ -216,16 +216,16 @@ export default function Home() {
                                 if (e.key === "Escape") clearSearch();
                             }}
                             placeholder={t("search.placeholder")}
-                            className="w-full bg-[#0f141a] border border-[#A66C13] focus:border-[#F4A52E] outline-none rounded-lg pl-10 pr-10 py-3 text-[15px] md:text-base font-extrabold text-gray-100"
+                            className="w-full bg-[#0f141a] border border-[#A66C13] focus:border-[#F4A52E] outline-none rounded-lg pl-12 pr-12 py-3 text-lg md:text-xl font-extrabold text-gray-100"
                         />
                         {q && (
                             <button
                                 type="button"
                                 onClick={clearSearch}
-                                className="absolute right-1.5 top-1/2 -translate-y-1/2 inline-flex items-center justify-center h-8 w-8 rounded-md text-gray-300 hover:text-primary-300 hover:bg-orange-500/10"
+                                className="absolute right-1.5 top-1/2 -translate-y-1/2 inline-flex items-center justify-center h-9 w-9 rounded-md text-gray-300 hover:text-primary-300 hover:bg-orange-500/10"
                                 aria-label={t("actions.clearFilters")}
                             >
-                                <X className="h-5 w-5" />
+                                <X className="h-6 w-6" />
                             </button>
                         )}
                     </div>
@@ -241,7 +241,7 @@ export default function Home() {
                     </div>
 
                     <main>
-                        <div className="flex items-center gap-2 mb-4 text-[15px] md:text-lg text-gray-200 font-extrabold">
+                        <div className="flex items-center gap-2 mb-5 text-lg md:text-2xl text-gray-200 font-extrabold">
                             {t("list.showing")} <span className="text-primary-300 mx-1">{loading ? "…" : filtered.length}</span>
                             {!loading && (selectedTag !== "All" ? `${t("list.in")} “${selectedTag}”` : t("list.gamesWord"))}
                             {!loading && (q.trim() ? ` ${t("list.for")} “${q.trim()}”` : "")}
@@ -266,7 +266,9 @@ export default function Home() {
                         </div>
 
                         {!loading && filtered.length === 0 && (
-                            <div className="text-gray-300 text-center py-12 text-xl font-extrabold">{t("list.noResults")}</div>
+                            <div className="text-gray-300 text-center py-12 text-2xl md:text-3xl font-extrabold">
+                                {t("list.noResults")}
+                            </div>
                         )}
 
                         <Footer />
@@ -280,14 +282,14 @@ export default function Home() {
                     <div className="fixed inset-0 flex">
                         <Dialog.Panel className="relative w-80 max-w-[85%] bg-[#0f141a] border-r border-[#A66C13] shadow-xl h-full flex flex-col">
                             <div className="flex items-center justify-between p-4 border-b border-[#1b2330] shrink-0">
-                                <span className="text-xl font-extrabold text-primary-300">{t("list.games")}</span>
+                                <span className="text-2xl font-extrabold text-primary-300">{t("list.games")}</span>
                                 <button
                                     type="button"
                                     onClick={() => setDrawerOpen(false)}
-                                    className="h-9 w-9 inline-flex items-center justify-center rounded-md text-gray-300 hover:text-primary-300 hover:bg-orange-500/10"
+                                    className="h-10 w-10 inline-flex items-center justify-center rounded-md text-gray-300 hover:text-primary-300 hover:bg-orange-500/10"
                                     aria-label={t("actions.closeMenu")}
                                 >
-                                    <X className="h-5 w-5" />
+                                    <X className="h-6 w-6" />
                                 </button>
                             </div>
                             <div className="flex-1 overflow-y-auto" style={{ WebkitOverflowScrolling: "touch" }}>

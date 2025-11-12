@@ -29,10 +29,10 @@ function SkeletonSidebar() {
     return (
         <div className="sticky top-[84px] self-start w-full lg:w-64">
             <div className="animate-pulse">
-                <div className="h-6 w-44 bg-gray-800 rounded mb-4" />
+                <div className="h-7 w-48 bg-gray-800 rounded mb-4" />
                 <ul className="space-y-2">
                     {Array.from({ length: 10 }).map((_, i) => (
-                        <li key={i} className="h-11 bg-gray-800/70 rounded-lg" />
+                        <li key={i} className="h-12 bg-gray-800/70 rounded-lg" />
                     ))}
                 </ul>
             </div>
@@ -43,17 +43,17 @@ function SkeletonSidebar() {
 function SkeletonContent() {
     return (
         <div className="animate-pulse">
-            <div className="h-7 w-32 bg-gray-800 rounded mb-4" />
-            <div className="border border-[#A66C13] rounded-2xl p-5 sm:p-6 bg-[#0f141a] shadow-[0_0_0_1px_rgba(244,165,46,.08)]">
-                <div className="space-y-3">
-                    <div className="h-6 bg-gray-800 rounded w-3/5" />
-                    <div className="h-5 bg-gray-800 rounded w-4/5" />
-                    <div className="h-5 bg-gray-800 rounded w-11/12" />
-                    <div className="h-5 bg-gray-800 rounded w-10/12" />
-                    <div className="h-64 bg-gray-800 rounded mt-4" />
-                    <div className="h-5 bg-gray-800 rounded w-9/12 mt-6" />
-                    <div className="h-5 bg-gray-800 rounded w-7/12" />
-                    <div className="h-5 bg-gray-800 rounded w-5/12" />
+            <div className="h-8 w-40 bg-gray-800 rounded mb-4" />
+            <div className="border border-[#A66C13] rounded-2xl p-6 sm:p-8 bg-[#0f141a] shadow-[0_0_0_1px_rgba(244,165,46,.08)]">
+                <div className="space-y-4">
+                    <div className="h-7 bg-gray-800 rounded w-3/5" />
+                    <div className="h-6 bg-gray-800 rounded w-4/5" />
+                    <div className="h-6 bg-gray-800 rounded w-11/12" />
+                    <div className="h-6 bg-gray-800 rounded w-10/12" />
+                    <div className="h-72 bg-gray-800 rounded mt-4" />
+                    <div className="h-6 bg-gray-800 rounded w-9/12 mt-6" />
+                    <div className="h-6 bg-gray-800 rounded w-7/12" />
+                    <div className="h-6 bg-gray-800 rounded w-5/12" />
                 </div>
             </div>
         </div>
@@ -111,12 +111,12 @@ export default function GameDetails() {
         <div className="bg-black min-h-screen text-white" dir={isRTL ? "rtl" : "ltr"}>
             <Navbar title={title} />
             <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-6 pb-16">
-                <div className="mb-4 flex items-center gap-4">
+                <div className="mb-5 flex items-center gap-4">
                     <button
                         onClick={() => navigate("/")}
-                        className="inline-flex items-center gap-2 text-gray-100 hover:text-primary-300 text-xl font-extrabold"
+                        className="inline-flex items-center gap-2 text-gray-100 hover:text-primary-300 text-2xl md:text-3xl font-extrabold"
                     >
-                        <ArrowLeft className="h-5 w-5" /> {t("actions.back")}
+                        <ArrowLeft className="h-6 w-6" /> {t("actions.back")}
                     </button>
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)] gap-6">
@@ -132,13 +132,13 @@ export default function GameDetails() {
                         {!loading && !!rewrittenHTML && (
                             <div
                                 key={i18n.language || "default"}
-                                className="prose prose-invert max-w-none mt-2 border border-[#A66C13] rounded-2xl p-5 sm:p-6 bg-[#0f141a] shadow-[0_0_0_1px_rgba(244,165,46,.08)] font-extrabold prose-p:text-[17px] prose-li:text-[17px] prose-strong:font-black prose-headings:text-primary-300"
+                                className="prose prose-invert max-w-none mt-2 border border-[#A66C13] rounded-2xl p-6 sm:p-8 bg-[#0f141a] shadow-[0_0_0_1px_rgba(244,165,46,.08)] font-extrabold prose-headings:text-primary-300 prose-p:text-xl md:prose-p:text-2xl prose-li:text-xl md:prose-li:text-2xl prose-strong:font-black"
                                 style={{ textAlign: isRTL ? "right" : "left" }}
                                 dangerouslySetInnerHTML={{ __html: rewrittenHTML }}
                             />
                         )}
                         {!loading && !rewrittenHTML && (
-                            <div className="text-gray-300 text-xl font-extrabold mt-4">{t("details.noContent")}</div>
+                            <div className="text-gray-300 text-2xl md:text-3xl font-extrabold mt-4">{t("details.noContent")}</div>
                         )}
                     </main>
                 </div>
