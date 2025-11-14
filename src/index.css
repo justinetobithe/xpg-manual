@@ -21,85 +21,89 @@
 }
 
 @layer components {
-  .view {
+  .manual-html {
+    @apply text-slate-100 text-base md:text-lg leading-relaxed font-normal;
+  }
+
+  .manual-html h2 {
+    @apply mt-6 mb-3 text-2xl md:text-3xl font-extrabold text-primary-300;
+  }
+
+  .manual-html h3 {
+    @apply mt-4 mb-1 text-xl md:text-2xl font-extrabold text-primary-300;
+  }
+
+  .manual-html p {
+    @apply mb-4;
+  }
+
+  .manual-html .view {
     @apply grid gap-4 my-4;
     grid-template-columns: 1fr;
   }
+
   @media (min-width: 768px) {
-    .view {
+    .manual-html .view {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
-  .border2 {
-    @apply bg-[#0b1116] border border-[#2a3444] rounded-2xl p-1 shadow-[0_0_0_1px_rgba(244,165,46,.06)];
-  }
-  .border {
-    @apply overflow-hidden rounded-xl border border-primary-400;
-  }
-  .border img {
-    @apply block w-full h-auto rounded-lg;
+  .manual-html .border2 {
+    @apply bg-[#0b1116] border border-[#F4A52E] rounded-2xl p-2 shadow-[0_0_0_1px_rgba(244,165,46,.3)];
   }
 
-  .under-table {
-    @apply mt-3 text-sm text-slate-300 italic;
+  .manual-html .border {
+    @apply overflow-hidden rounded-xl border border-[#F4A52E];
   }
 
-  .table1,
-  .table3 {
-    @apply my-5;
-  }
-  .table1 .border2,
-  .table3 .border2 {
-    @apply bg-[#0b1116] border border-[#2a3444] rounded-2xl p-1;
+  .manual-html .border img {
+    @apply block w-full h-auto;
   }
 
-  .table1 table,
-  .table3 table,
-  .table1 table *,
-  .table3 table * {
-    border-collapse: collapse;
+  .manual-html .table4 {
+    @apply my-6 overflow-x-auto;
   }
-  .table1 table,
-  .table3 table {
-    @apply w-full text-left;
+
+  .manual-html .table4 table {
+    @apply w-full text-left text-sm md:text-base border-collapse;
   }
-  .table1 td,
-  .table1 th,
-  .table3 td,
-  .table3 th {
-    @apply p-3 align-top border border-[#2a3444] text-slate-100;
+
+  .manual-html .table4 td,
+  .manual-html .table4 th {
+    @apply px-3 py-2 align-top border border-[#2a3444] text-slate-100;
   }
-  .table1 tr.top td,
-  .table1 tr.top th,
-  .table3 tr.top td,
-  .table3 tr.top th {
+
+  .manual-html .table4 tr.top td,
+  .manual-html .table4 tr.top th {
     @apply bg-[#141a22] font-bold text-primary-300;
   }
 
-  .fsize td,
-  .fsize th {
-    @apply text-base md:text-lg;
+  .manual-html .table2 {
+    @apply my-6 w-full;
   }
 
-  .layout {
-    @apply grid gap-6 my-6;
-    grid-template-columns: 1fr;
-  }
-  @media (min-width: 768px) {
-    .layout {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-  .block {
-    @apply grid items-center gap-4 bg-[#0b1116] border border-[#2a3444] rounded-xl p-3;
-    grid-template-columns: minmax(0, 200px) 1fr;
-  }
-  .wrap {
-    @apply text-slate-100;
+  .manual-html .table2 table {
+    @apply w-full text-left text-sm md:text-base border-collapse;
   }
 
-  p span {
+  .manual-html .table2 td,
+  .manual-html .table2 th {
+    @apply px-3 py-2 align-top text-slate-100;
+  }
+
+  .manual-html .table2 h2 {
+    @apply mb-2;
+  }
+
+  .manual-html .table2 h3 {
+    @apply mb-1;
+  }
+
+  .manual-html .under-table {
+    @apply mt-3 text-sm text-slate-300 italic;
+  }
+
+  .manual-html p span {
     @apply text-primary-300 font-semibold;
   }
 }

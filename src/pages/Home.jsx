@@ -26,8 +26,8 @@ function SidebarList({ games = [], selected = "All", onSelect = () => { }, onAft
                             onAfterSelect();
                         }}
                         className={`w-full text-left block px-5 py-4 rounded-lg border text-xl md:text-2xl font-extrabold ${selected === "All"
-                            ? "border-[#F4A52E] text-primary-300 bg-[#1a2028]"
-                            : "border-[#2a3444] text-gray-100 hover:text-primary-300 hover:border-[#A66C13]"
+                                ? "border-[#F4A52E] text-primary-300 bg-[#1a2028]"
+                                : "border-[#2a3444] text-gray-100 hover:text-primary-300 hover:border-[#A66C13]"
                             }`}
                     >
                         {t("list.all")} ({total})
@@ -35,21 +35,19 @@ function SidebarList({ games = [], selected = "All", onSelect = () => { }, onAft
                 </li>
                 {games
                     .slice()
-                    .sort((a, b) =>
-                        (
+                    .sort((a, b) => {
+                        const aName =
                             (a.translation?.[i18n.language] ??
                                 a.translation?.[(i18n.language || "").split("-")[0]])?.name ??
                             a.name ??
-                            ""
-                        ).localeCompare(
-                            (
-                                (b.translation?.[i18n.language] ??
-                                    b.translation?.[(i18n.language || "").split("-")[0]])?.name ??
-                                b.name ??
-                                ""
-                            )
-                        )
-                    )
+                            "";
+                        const bName =
+                            (b.translation?.[i18n.language] ??
+                                b.translation?.[(i18n.language || "").split("-")[0]])?.name ??
+                            b.name ??
+                            "";
+                        return aName.localeCompare(bName);
+                    })
                     .map((g) => (
                         <li key={g.tag}>
                             <button
@@ -59,8 +57,8 @@ function SidebarList({ games = [], selected = "All", onSelect = () => { }, onAft
                                     onAfterSelect();
                                 }}
                                 className={`w-full text-left block px-5 py-4 rounded-lg border text-xl md:text-2xl font-extrabold ${selected === g.tag
-                                    ? "border-[#F4A52E] text-primary-300 bg-[#1a2028]"
-                                    : "border-[#2a3444] text-gray-100 hover:text-primary-300 hover:border-[#A66C13]"
+                                        ? "border-[#F4A52E] text-primary-300 bg-[#1a2028]"
+                                        : "border-[#2a3444] text-gray-100 hover:text-primary-300 hover:border-[#A66C13]"
                                     }`}
                             >
                                 {(g.translation?.[i18n.language] ??
@@ -167,22 +165,22 @@ export default function Home() {
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-6">
                 <div className="flex items-center justify-between gap-4">
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-3">
                         <button
                             type="button"
                             onClick={() => setDrawerOpen(true)}
-                            className="lg:hidden inline-flex items-center justify-center h-14 w-14 rounded-md border border-[#A66C13] text-gray-100 hover:text-primary-300 hover:bg-orange-500/10"
+                            className="lg:hidden inline-flex items-center justify-center h-11 w-11 rounded-md border border-[#A66C13] text-gray-100 hover:text-primary-300 hover:bg-orange-500/10"
                             aria-label={t("actions.openMenu")}
                         >
-                            <Menu className="h-8 w-8" />
+                            <Menu className="h-6 w-6" />
                         </button>
-                        <h1 className="text-5xl md:text-7xl font-extrabold text-primary-400 leading-tight">
+                        <h1 className="text-3xl md:text-4xl font-extrabold text-primary-400 leading-tight">
                             {t("titles.manual")}
                         </h1>
                     </div>
 
-                    <div className="relative hidden lg:block w-[34rem]">
-                        <Search className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 h-7 w-7 text-gray-400" />
+                    <div className="relative hidden lg:block w-[22rem] xl:w-[26rem]">
+                        <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                         <input
                             ref={inputRef}
                             value={q}
@@ -191,24 +189,24 @@ export default function Home() {
                                 if (e.key === "Escape") clearSearch();
                             }}
                             placeholder={t("search.placeholder")}
-                            className="w-full bg-[#0f141a] border border-[#A66C13] focus:border-[#F4A52E] outline-none rounded-lg pl-14 pr-14 py-4 text-xl md:text-2xl font-extrabold text-gray-100"
+                            className="w-full bg-[#0f141a] border border-[#A66C13] focus:border-[#F4A52E] outline-none rounded-md pl-9 pr-9 py-2.5 text-base md:text-lg font-bold text-gray-100"
                         />
                         {q && (
                             <button
                                 type="button"
                                 onClick={clearSearch}
-                                className="absolute right-2 top-1/2 -translate-y-1/2 inline-flex items-center justify-center h-10 w-10 rounded-md text-gray-300 hover:text-primary-300 hover:bg-orange-500/10"
+                                className="absolute right-2 top-1/2 -translate-y-1/2 inline-flex items-center justify-center h-8 w-8 rounded-md text-gray-300 hover:text-primary-300 hover:bg-orange-500/10"
                                 aria-label={t("actions.clearFilters")}
                             >
-                                <X className="h-6 w-6" />
+                                <X className="h-4 w-4" />
                             </button>
                         )}
                     </div>
                 </div>
 
-                <div className="lg:hidden mt-5">
+                <div className="lg:hidden mt-4">
                     <div className="relative">
-                        <Search className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 h-7 w-7 text-gray-400" />
+                        <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                         <input
                             value={q}
                             onChange={(e) => setQ(e.target.value)}
@@ -216,22 +214,22 @@ export default function Home() {
                                 if (e.key === "Escape") clearSearch();
                             }}
                             placeholder={t("search.placeholder")}
-                            className="w-full bg-[#0f141a] border border-[#A66C13] focus:border-[#F4A52E] outline-none rounded-lg pl-14 pr-14 py-4 text-xl md:text-2xl font-extrabold text-gray-100"
+                            className="w-full bg-[#0f141a] border border-[#A66C13] focus:border-[#F4A52E] outline-none rounded-md pl-9 pr-9 py-2.5 text-base md:text-lg font-bold text-gray-100"
                         />
                         {q && (
                             <button
                                 type="button"
                                 onClick={clearSearch}
-                                className="absolute right-2 top-1/2 -translate-y-1/2 inline-flex items-center justify-center h-10 w-10 rounded-md text-gray-300 hover:text-primary-300 hover:bg-orange-500/10"
+                                className="absolute right-2 top-1/2 -translate-y-1/2 inline-flex items-center justify-center h-8 w-8 rounded-md text-gray-300 hover:text-primary-300 hover:bg-orange-500/10"
                                 aria-label={t("actions.clearFilters")}
                             >
-                                <X className="h-6 w-6" />
+                                <X className="h-4 w-4" />
                             </button>
                         )}
                     </div>
                 </div>
 
-                <div className="mt-10 grid grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)] gap-8">
+                <div className="mt-8 grid grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)] gap-8">
                     <div className="hidden lg:block">
                         {loading ? (
                             <SkeletonSidebar />
@@ -241,8 +239,9 @@ export default function Home() {
                     </div>
 
                     <main>
-                        <div className="flex items-center gap-3 mb-6 text-2xl md:text-3xl text-gray-200 font-extrabold">
-                            {t("list.showing")} <span className="text-primary-300 mx-1">{loading ? "…" : filtered.length}</span>
+                        <div className="flex items-center gap-3 mb-5 text-base md:text-lg text-gray-200 font-extrabold">
+                            {t("list.showing")}{" "}
+                            <span className="text-primary-300 mx-1">{loading ? "…" : filtered.length}</span>
                             {!loading && (selectedTag !== "All" ? `${t("list.in")} “${selectedTag}”` : t("list.gamesWord"))}
                             {!loading && (q.trim() ? ` ${t("list.for")} “${q.trim()}”` : "")}
                             {!loading && (selectedTag !== "All" || q.trim()) && (
@@ -252,7 +251,7 @@ export default function Home() {
                                         setQ("");
                                         inputRef.current?.focus();
                                     }}
-                                    className="ml-3 text-gray-100 underline hover:text-primary-300"
+                                    className="ml-3 text-gray-100 underline hover:text-primary-300 text-sm md:text-base"
                                 >
                                     {t("actions.clearFilters")}
                                 </button>
@@ -266,7 +265,7 @@ export default function Home() {
                         </div>
 
                         {!loading && filtered.length === 0 && (
-                            <div className="text-gray-300 text-center py-14 text-3xl md:text-4xl font-extrabold">
+                            <div className="text-gray-300 text-center py-10 text-2xl md:text-3xl font-extrabold">
                                 {t("list.noResults")}
                             </div>
                         )}

@@ -39,7 +39,7 @@ export default function GameCard({ game }) {
                         />
                     </div>
                     <div className="bg-black text-center border-t-2 border-primary-400 px-6 py-5 min-h-[80px] flex items-center justify-center">
-                        <h2 className="text-white text-3xl md:text-4xl font-black tracking-wide leading-snug break-words line-clamp-2">
+                        <h2 className="text-white text-2xl font-black tracking-wide leading-snug break-words line-clamp-2">
                             {title}
                         </h2>
                     </div>

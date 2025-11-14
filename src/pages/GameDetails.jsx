@@ -124,7 +124,11 @@ export default function GameDetails() {
                         {loading ? (
                             <SkeletonSidebar />
                         ) : (
-                            <Sidebar games={sidebarGames} selected={String(iurl)} onSelect={(tag) => navigate(`/games/${tag}`)} />
+                            <Sidebar
+                                games={sidebarGames}
+                                selected={String(iurl)}
+                                onSelect={(tag) => navigate(`/games/${tag}`)}
+                            />
                         )}
                     </div>
                     <main>
@@ -132,13 +136,15 @@ export default function GameDetails() {
                         {!loading && !!rewrittenHTML && (
                             <div
                                 key={i18n.language || "default"}
-                                className="prose prose-invert max-w-none mt-2 border border-[#A66C13] rounded-2xl p-6 sm:p-8 bg-[#0f141a] shadow-[0_0_0_1px_rgba(244,165,46,.08)] font-extrabold prose-headings:text-primary-300 prose-p:text-2xl md:prose-p:text-3xl prose-li:text-2xl md:prose-li:text-3xl prose-strong:font-black"
+                                className="manual-html mt-2 border border-[#A66C13] rounded-2xl p-6 sm:p-8 bg-[#0f141a] shadow-[0_0_0_1px_rgba(244,165,46,.08)]"
                                 style={{ textAlign: isRTL ? "right" : "left" }}
                                 dangerouslySetInnerHTML={{ __html: rewrittenHTML }}
                             />
                         )}
                         {!loading && !rewrittenHTML && (
-                            <div className="text-gray-300 text-3xl md:text-4xl font-extrabold mt-4">{t("details.noContent")}</div>
+                            <div className="text-gray-300 text-3xl md:text-4xl font-extrabold mt-4">
+                                {t("details.noContent")}
+                            </div>
                         )}
                     </main>
                 </div>
