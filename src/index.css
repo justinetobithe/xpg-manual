@@ -128,13 +128,11 @@
   }
 
   .manual-html .table1 .tab1 {
-    /* width: 59%; */
     float: left;
     margin-bottom: 20px;
   }
 
   .manual-html .table1 .tab2 {
-    /* width: 40%; */
     float: right;
   }
 
@@ -227,7 +225,8 @@
   .manual-html .table4 table {
     @apply w-full text-left text-sm md:text-base border-collapse;
     width: 100%;
-    table-layout: auto;
+    table-layout: fixed;
+    word-wrap: break-word;
   }
 
   .manual-html .table4 td,
@@ -238,6 +237,17 @@
   .manual-html .table4 tr.top td,
   .manual-html .table4 tr.top th {
     @apply bg-[#141a22] font-bold text-primary-300;
+  }
+
+  @media (max-width: 640px) {
+    .manual-html .table4 table {
+      font-size: 0.75rem;
+    }
+
+    .manual-html .table4 td,
+    .manual-html .table4 th {
+      padding: 0.25rem 0.35rem;
+    }
   }
 
   .manual-html .table5 {
