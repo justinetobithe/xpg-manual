@@ -1,4 +1,4 @@
-import { Fragment, useMemo } from "react";
+import { Fragment, useMemo, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Menu, Transition } from "@headlessui/react";
 import * as Flags from "country-flag-icons/react/3x2";
@@ -13,6 +13,7 @@ function Flag({ country, className = "h-4 w-6 rounded-sm" }) {
 export default function Navbar({ title = "", onLang, lang }) {
     const { t } = useTranslation();
     const { selectedLanguage, setLanguage, languages } = useLanguage();
+    const [isScrolled, setIsScrolled] = useState(false);
 
     const ordered = useMemo(() => {
         const en = languages.find((l) => l.code === "en");
@@ -24,77 +25,106 @@ export default function Navbar({ title = "", onLang, lang }) {
 
     const current = selectedLanguage || ordered[0];
 
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 0) {
+                setIsScrolled(true);
+            } else {
+                setIsScrolled(false);
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        handleScroll();
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
+
+    const gameTitle = title || t("titles.gameRules");
+
     return (
         <header className="sticky top-0 z-20 backdrop-blur bg-black/80 border-b border-[#A66C13] shadow-[0_0_20px_rgba(244,165,46,.08)]">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 grid grid-cols-3 items-center">
-                <div className="flex items-center gap-3">
-                    <Link to="/" className="inline-flex items-center">
-                        <img
-                            src="/logo_2.png"
-                            alt={t("brand.name")}
-                            className="h-10 w-auto md:h-12 hover:opacity-90 transition"
-                        />
-                    </Link>
-                </div>
-                <div className="text-center">
-                    {title ? (
-                        <span className="mx-auto max-w-[70vw] text-2xl sm:text-2xl md:text-3xl font-extrabold text-primary-300 truncate">
-                            {title}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3">
+                {isScrolled ? (
+                    <div className="w-full flex justify-center">
+                        <span className="w-full text-center text-2xl sm:text-2xl md:text-3xl font-extrabold text-primary-300 truncate">
+                            {gameTitle}
                         </span>
-                    ) : (
-                        <span className="text-2xl sm:text-2xl md:text-3xl font-extrabold text-primary-300">
-                            {t("titles.gameRules")}
-                        </span>
-                    )}
-                </div>
-                <div className="justify-self-end">
-                    <Menu as="div" className="relative inline-block text-left">
-                        <Menu.Button className="inline-flex items-center gap-2 rounded-md border border-[#A66C13] px-3 py-2 text-sm sm:text-base font-bold text-gray-100 hover:border-primary-400 transition">
-                            <Flag country={current.country} />
-                            <span className="hidden sm:inline">{current.label}</span>
-                            <span className="sm:hidden">{current.code.toUpperCase()}</span>
-                        </Menu.Button>
-                        <Transition
-                            as={Fragment}
-                            enter="transition ease-out duration-100"
-                            enterFrom="transform opacity-0 scale-95"
-                            enterTo="transform opacity-100 scale-100"
-                            leave="transition ease-in duration-75"
-                            leaveFrom="transform opacity-100 scale-100"
-                            leaveTo="transform opacity-0 scale-95"
-                        >
-                            <Menu.Items className="absolute right-0 mt-2 w-60 origin-top-right rounded-md border border-[#A66C13] bg-[#0f141a] shadow-xl focus:outline-none">
-                                <div className="py-1">
-                                    {ordered.map((l) => (
-                                        <Menu.Item key={l.code}>
-                                            {({ active }) => (
-                                                <button
-                                                    type="button"
-                                                    onClick={() => setLanguage(l.code)}
-                                                    className={`w-full flex items-center gap-2 px-3 py-2 text-sm sm:text-base ${active ? "bg-orange-500/10" : ""
-                                                        } ${l.code === current.code
-                                                            ? "text-primary-300"
-                                                            : "text-gray-100"
-                                                        } font-bold`}
-                                                >
-                                                    <Flag country={l.country} />
-                                                    <span className="flex-1 text-left truncate">
-                                                        {l.label}
-                                                    </span>
-                                                    {l.code === current.code && (
-                                                        <span className="text-xs font-black text-primary-300">
-                                                            ●
-                                                        </span>
-                                                    )}
-                                                </button>
-                                            )}
-                                        </Menu.Item>
-                                    ))}
-                                </div>
-                            </Menu.Items>
-                        </Transition>
-                    </Menu>
-                </div>
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-3 items-center">
+                        <div className="flex items-center gap-3">
+                            <Link to="/" className="inline-flex items-center">
+                                <img
+                                    src="/logo_2.png"
+                                    alt={t("brand.name")}
+                                    className="h-10 w-auto md:h-12 hover:opacity-90 transition"
+                                />
+                            </Link>
+                        </div>
+                        <div className="text-center">
+                            <span className="mx-auto max-w-[70vw] text-2xl sm:text-2xl md:text-3xl font-extrabold text-primary-300 truncate">
+                                {gameTitle}
+                            </span>
+                        </div>
+                        <div className="justify-self-end">
+                            {current && (
+                                <Menu as="div" className="relative inline-block text-left">
+                                    <Menu.Button className="inline-flex items-center gap-2 rounded-md border border-[#A66C13] px-3 py-2 text-sm sm:text-base font-bold text-gray-100 hover:border-primary-400 transition">
+                                        <Flag country={current.country} />
+                                        <span className="hidden sm:inline">{current.label}</span>
+                                        <span className="sm:hidden">
+                                            {current.code.toUpperCase()}
+                                        </span>
+                                    </Menu.Button>
+                                    <Transition
+                                        as={Fragment}
+                                        enter="transition ease-out duration-100"
+                                        enterFrom="transform opacity-0 scale-95"
+                                        enterTo="transform opacity-100 scale-100"
+                                        leave="transition ease-in duration-75"
+                                        leaveFrom="transform opacity-100 scale-100"
+                                        leaveTo="transform opacity-0 scale-95"
+                                    >
+                                        <Menu.Items className="absolute right-0 mt-2 w-60 origin-top-right rounded-md border border-[#A66C13] bg-[#0f141a] shadow-xl focus:outline-none">
+                                            <div className="py-1">
+                                                {ordered.map((l) => (
+                                                    <Menu.Item key={l.code}>
+                                                        {({ active }) => (
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => setLanguage(l.code)}
+                                                                className={`w-full flex items-center gap-2 px-3 py-2 text-sm sm:text-base ${active
+                                                                        ? "bg-orange-500/10"
+                                                                        : ""
+                                                                    } ${l.code === current.code
+                                                                        ? "text-primary-300"
+                                                                        : "text-gray-100"
+                                                                    } font-bold`}
+                                                            >
+                                                                <Flag country={l.country} />
+                                                                <span className="flex-1 text-left truncate">
+                                                                    {l.label}
+                                                                </span>
+                                                                {l.code === current.code && (
+                                                                    <span className="text-xs font-black text-primary-300">
+                                                                        ●
+                                                                    </span>
+                                                                )}
+                                                            </button>
+                                                        )}
+                                                    </Menu.Item>
+                                                ))}
+                                            </div>
+                                        </Menu.Items>
+                                    </Transition>
+                                </Menu>
+                            )}
+                        </div>
+                    </div>
+                )}
             </div>
         </header>
     );

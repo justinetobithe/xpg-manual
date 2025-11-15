@@ -7,6 +7,7 @@ import { db } from "../firebase";
 import Footer from "@/components/Footer";
 import { ArrowLeft } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import ImageDialog from "@/components/ImageDialog";
 
 const basename = (p = "") => {
     const parts = String(p).trim().split(/[/\\]+/);
@@ -68,6 +69,10 @@ export default function GameDetails() {
     const [sidebarGames, setSidebarGames] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    const [imageDialogOpen, setImageDialogOpen] = useState(false);
+    const [imageDialogSrc, setImageDialogSrc] = useState("");
+    const [imageDialogAlt, setImageDialogAlt] = useState("");
+
     useEffect(() => {
         (async () => {
             setLoading(true);
@@ -107,6 +112,14 @@ export default function GameDetails() {
     const rewrittenHTML = useMemo(() => rewriteImagesToGames(sourceText), [sourceText]);
     const isRTL = /^ar|^he|^fa|^ur/i.test(i18n.language || "");
 
+    const handleContentClick = (e) => {
+        const img = e.target.closest("img");
+        if (!img) return;
+        setImageDialogSrc(img.getAttribute("src") || "");
+        setImageDialogAlt(img.getAttribute("alt") || "");
+        setImageDialogOpen(true);
+    };
+
     return (
         <div className="bg-black min-h-screen text-white" dir={isRTL ? "rtl" : "ltr"}>
             <Navbar title={title} />
@@ -139,6 +152,7 @@ export default function GameDetails() {
                                 className="manual-html mt-2 border border-[#A66C13] rounded-2xl p-6 sm:p-8 bg-[#0f141a] shadow-[0_0_0_1px_rgba(244,165,46,.08)]"
                                 style={{ textAlign: isRTL ? "right" : "left" }}
                                 dangerouslySetInnerHTML={{ __html: rewrittenHTML }}
+                                onClick={handleContentClick}
                             />
                         )}
                         {!loading && !rewrittenHTML && (
@@ -150,6 +164,12 @@ export default function GameDetails() {
                 </div>
             </div>
             <Footer />
+            <ImageDialog
+                open={imageDialogOpen}
+                src={imageDialogSrc}
+                alt={imageDialogAlt}
+                onClose={() => setImageDialogOpen(false)}
+            />
         </div>
     );
 }

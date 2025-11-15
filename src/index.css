@@ -25,6 +25,13 @@
     @apply text-slate-100 text-base md:text-lg leading-relaxed font-normal;
   }
 
+  .manual-html h1 {
+    color: #d68c30;
+    font-weight: 900;
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
   .manual-html h2 {
     @apply mt-6 mb-3 text-2xl md:text-3xl font-extrabold text-primary-300;
   }
@@ -35,6 +42,67 @@
 
   .manual-html p {
     @apply mb-4;
+    font-size: 1.05rem;
+    font-weight: 600;
+  }
+
+  .manual-html p span {
+    @apply text-primary-300 font-semibold;
+  }
+
+  .manual-html sup {
+    vertical-align: text-top;
+    font-size: 0.75em;
+  }
+
+  .manual-html .green {
+    color: #3d9432;
+  }
+
+  .manual-html .red {
+    color: #d2232a;
+  }
+
+  .manual-html .blue {
+    color: #3484c5;
+  }
+
+  .manual-html .rose {
+    color: #ec008c;
+  }
+
+  .manual-html .clear {
+    clear: both;
+    padding: 0.5%;
+    width: 100%;
+  }
+
+  .manual-html ul {
+    padding-left: 0;
+    list-style: none;
+    margin-bottom: 1rem;
+  }
+
+  .manual-html ol {
+    padding-left: 1.4em;
+    list-style: decimal;
+    margin-bottom: 1rem;
+  }
+
+  .manual-html li {
+    margin-bottom: 0.25rem;
+  }
+
+  .manual-html .border {
+    @apply overflow-hidden rounded-xl border border-[#F4A52E];
+  }
+
+  .manual-html .border2 {
+    @apply bg-[#0b1116] border border-[#F4A52E] rounded-2xl p-2 shadow-[0_0_0_1px_rgba(244,165,46,.3)];
+  }
+
+  .manual-html .border img {
+    @apply block w-full h-auto;
   }
 
   .manual-html .view {
@@ -48,24 +116,118 @@
     }
   }
 
-  .manual-html .border2 {
-    @apply bg-[#0b1116] border border-[#F4A52E] rounded-2xl p-2 shadow-[0_0_0_1px_rgba(244,165,46,.3)];
+  .manual-html table {
+    border-collapse: collapse;
+    border-spacing: 0;
   }
 
-  .manual-html .border {
-    @apply overflow-hidden rounded-xl border border-[#F4A52E];
+  .manual-html .table1 {
+    width: fit-content;
+    padding: 2% 0;
+    display: block;
   }
 
-  .manual-html .border img {
-    @apply block w-full h-auto;
+  .manual-html .table1 .tab1 {
+    /* width: 59%; */
+    float: left;
+    margin-bottom: 20px;
+  }
+
+  .manual-html .table1 .tab2 {
+    /* width: 40%; */
+    float: right;
+  }
+
+  .manual-html .table1 table {
+    font-size: 1.1em;
+    font-weight: normal;
+    border-collapse: collapse;
+    border-spacing: 0;
+    text-align: left;
+  }
+
+  .manual-html .table1 table .top {
+    background-color: #d68c30;
+  }
+
+  .manual-html .table1 table td {
+    border: 3px solid white;
+    padding: 5px;
+  }
+
+  .manual-html .table1 table td:nth-child(3) {
+    color: #d68c30;
+  }
+
+  .manual-html .table2 {
+    @apply my-6 w-full;
+  }
+
+  .manual-html .table2 table {
+    @apply w-full text-left text-sm md:text-base border-collapse;
+  }
+
+  .manual-html .table2 table tr {
+    border-bottom: 1px solid #333333;
+  }
+
+  .manual-html .table2 table tr:first-child,
+  .manual-html .table2 table tr:last-child {
+    border-bottom: 1px solid transparent;
+  }
+
+  .manual-html .table2 td,
+  .manual-html .table2 th {
+    @apply px-3 py-2 align-top text-slate-100;
+  }
+
+  .manual-html .table2 img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .manual-html .table2 td:nth-child(1) {
+    font-size: 1.2em;
+    font-weight: 600;
+    vertical-align: middle;
+  }
+
+  .manual-html .table3 {
+    width: fit-content;
+    padding: 2% 15%;
+    display: inline-block;
+    padding-left: 0;
+  }
+
+  .manual-html .table3 table {
+    font-size: 1.3em;
+    font-weight: 600;
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+
+  .manual-html .table3 table td {
+    border: 3px solid white;
+    padding: 5px;
+    vertical-align: middle;
+  }
+
+  .manual-html .table3 table td:nth-child(1) {
+    text-align: left;
+    color: #d68c30;
+    vertical-align: middle;
   }
 
   .manual-html .table4 {
     @apply my-6 overflow-x-auto;
+    text-align: left;
+    width: 100%;
   }
 
   .manual-html .table4 table {
     @apply w-full text-left text-sm md:text-base border-collapse;
+    width: 100%;
+    table-layout: auto;
   }
 
   .manual-html .table4 td,
@@ -78,32 +240,113 @@
     @apply bg-[#141a22] font-bold text-primary-300;
   }
 
-  .manual-html .table2 {
-    @apply my-6 w-full;
+  .manual-html .table5 {
+    padding: 2% 5%;
+    text-align: center;
+    width: 100%;
   }
 
-  .manual-html .table2 table {
-    @apply w-full text-left text-sm md:text-base border-collapse;
+  .manual-html .table5 table {
+    display: inline-block;
+    width: 90%;
   }
 
-  .manual-html .table2 td,
-  .manual-html .table2 th {
-    @apply px-3 py-2 align-top text-slate-100;
+  .manual-html .table5 table td {
+    padding: 5px;
+    vertical-align: middle;
   }
 
-  .manual-html .table2 h2 {
-    @apply mb-2;
-  }
-
-  .manual-html .table2 h3 {
-    @apply mb-1;
+  .manual-html .fsize table {
+    font-size: 1.3em;
+    font-weight: 600;
   }
 
   .manual-html .under-table {
     @apply mt-3 text-sm text-slate-300 italic;
+    font-weight: normal;
   }
 
-  .manual-html p span {
-    @apply text-primary-300 font-semibold;
+  .manual-html .sidetext table td {
+    padding: 1%;
+  }
+
+  .manual-html .sidetext td:nth-child(1) {
+    width: 45%;
+  }
+
+  .manual-html .sidetext p {
+    margin-bottom: 4%;
+  }
+
+  .manual-html .sidetext2 table td {
+    padding: 1%;
+  }
+
+  .manual-html .sidetext2 td:nth-child(1) {
+    width: 65%;
+  }
+
+  .manual-html .sidetext2 p {
+    margin-bottom: 4%;
+  }
+
+  .manual-html .layout {
+    width: 100%;
+    margin: 2% 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+  }
+
+  .manual-html .layout .block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 260px;
+    text-align: center;
+  }
+
+  .manual-html .layout .block .wrap {
+    width: 100%;
+    margin: 0.75rem 0 0;
+    font-size: 1.05rem;
+  }
+
+  .manual-html .layout .block .wrap:first-child {
+    margin-top: 0;
+  }
+
+  .manual-html .layout .block img {
+    height: auto;
+    max-width: 100%;
+    display: block;
+  }
+
+  .manual-html .mobile {
+    margin-top: 0;
+    margin: auto;
+    padding: 2%;
+  }
+
+  .manual-html .mobile img {
+    max-width: 100%;
+    display: block;
+  }
+
+  .manual-html .blok-inline {
+    display: inline-block;
+  }
+
+  .manual-html .width {
+    display: block;
+    width: 50%;
+    padding: 1%;
+    float: left;
+  }
+
+  .manual-html .width img {
+    max-width: 100%;
+    display: block;
   }
 }
