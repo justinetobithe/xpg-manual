@@ -27,22 +27,18 @@ export default function Navbar({ title = "", onLang, lang }) {
 
     useEffect(() => {
         const handleScroll = () => {
-            if (window.scrollY > 0) {
-                setIsScrolled(true);
-            } else {
-                setIsScrolled(false);
-            }
+            if (window.scrollY > 0) setIsScrolled(true);
+            else setIsScrolled(false);
         };
-
         window.addEventListener("scroll", handleScroll, { passive: true });
         handleScroll();
-
         return () => {
             window.removeEventListener("scroll", handleScroll);
         };
     }, []);
 
-    const gameTitle = title || t("titles.gameRules");
+    const hasCustomTitle = !!title;
+    const gameTitle = hasCustomTitle ? title : t("titles.gameRules");
 
     return (
         <header className="sticky top-0 z-20 backdrop-blur bg-black/80 border-b border-[#A66C13] shadow-[0_0_20px_rgba(244,165,46,.08)]">
@@ -65,7 +61,12 @@ export default function Navbar({ title = "", onLang, lang }) {
                             </Link>
                         </div>
                         <div className="text-center">
-                            <span className="mx-auto max-w-[70vw] text-2xl sm:text-2xl md:text-3xl font-extrabold text-primary-300 truncate">
+                            <span
+                                className={
+                                    "mx-auto max-w-[70vw] text-2xl sm:text-2xl md:text-3xl font-extrabold text-primary-300 truncate " +
+                                    (hasCustomTitle ? "hidden sm:inline" : "")
+                                }
+                            >
                                 {gameTitle}
                             </span>
                         </div>
@@ -75,9 +76,7 @@ export default function Navbar({ title = "", onLang, lang }) {
                                     <Menu.Button className="inline-flex items-center gap-2 rounded-md border border-[#A66C13] px-3 py-2 text-sm sm:text-base font-bold text-gray-100 hover:border-primary-400 transition">
                                         <Flag country={current.country} />
                                         <span className="hidden sm:inline">{current.label}</span>
-                                        <span className="sm:hidden">
-                                            {current.code.toUpperCase()}
-                                        </span>
+                                        <span className="sm:hidden">{current.code.toUpperCase()}</span>
                                     </Menu.Button>
                                     <Transition
                                         as={Fragment}
@@ -96,22 +95,17 @@ export default function Navbar({ title = "", onLang, lang }) {
                                                             <button
                                                                 type="button"
                                                                 onClick={() => setLanguage(l.code)}
-                                                                className={`w-full flex items-center gap-2 px-3 py-2 text-sm sm:text-base ${active
-                                                                        ? "bg-orange-500/10"
-                                                                        : ""
-                                                                    } ${l.code === current.code
-                                                                        ? "text-primary-300"
-                                                                        : "text-gray-100"
-                                                                    } font-bold`}
+                                                                className={
+                                                                    "w-full flex items-center gap-2 px-3 py-2 text-sm sm:text-base " +
+                                                                    (active ? "bg-orange-500/10 " : "") +
+                                                                    (l.code === current.code ? "text-primary-300" : "text-gray-100") +
+                                                                    " font-bold"
+                                                                }
                                                             >
                                                                 <Flag country={l.country} />
-                                                                <span className="flex-1 text-left truncate">
-                                                                    {l.label}
-                                                                </span>
+                                                                <span className="flex-1 text-left truncate">{l.label}</span>
                                                                 {l.code === current.code && (
-                                                                    <span className="text-xs font-black text-primary-300">
-                                                                        ●
-                                                                    </span>
+                                                                    <span className="text-xs font-black text-primary-300">●</span>
                                                                 )}
                                                             </button>
                                                         )}
