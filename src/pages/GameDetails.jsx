@@ -1,8 +1,18 @@
 import { useState, useMemo, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { collection, doc, getDoc, getDocs, orderBy, query, where, limit } from "firebase/firestore";
+import {
+    collection,
+    doc,
+    getDoc,
+    getDocs,
+    orderBy,
+    query,
+    where,
+    limit
+} from "firebase/firestore";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
+import AppDrawer from "@/components/AppDrawer";
 import { db } from "../firebase";
 import Footer from "@/components/Footer";
 import { ArrowLeft } from "lucide-react";
@@ -52,9 +62,6 @@ function SkeletonContent() {
                     <div className="h-6 bg-gray-800 rounded w-11/12" />
                     <div className="h-6 bg-gray-800 rounded w-10/12" />
                     <div className="h-72 bg-gray-800 rounded mt-4" />
-                    <div className="h-6 bg-gray-800 rounded w-9/12 mt-6" />
-                    <div className="h-6 bg-gray-800 rounded w-7/12" />
-                    <div className="h-6 bg-gray-800 rounded w-5/12" />
                 </div>
             </div>
         </div>
@@ -65,6 +72,9 @@ export default function GameDetails() {
     const { t, i18n } = useTranslation();
     const { iurl } = useParams();
     const navigate = useNavigate();
+
+    const [drawerOpen, setDrawerOpen] = useState(false);
+
     const [game, setGame] = useState(null);
     const [sidebarGames, setSidebarGames] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -78,28 +88,37 @@ export default function GameDetails() {
             setLoading(true);
             let foundGame = null;
             const tag = String(iurl || "").trim();
+
             if (tag) {
-                const qByTag = query(collection(db, "manual-games"), where("tag", "==", tag), limit(1));
+                const qByTag = query(
+                    collection(db, "manual-games"),
+                    where("tag", "==", tag),
+                    limit(1)
+                );
                 const byTagSnap = await getDocs(qByTag);
                 if (!byTagSnap.empty) {
                     const d = byTagSnap.docs[0];
                     foundGame = { ...d.data(), id: d.id, tag: d.data().tag || d.id };
                 }
             }
+
             if (!foundGame && tag) {
                 const docSnap = await getDoc(doc(db, "manual-games", tag));
                 if (docSnap.exists()) {
                     foundGame = { ...docSnap.data(), id: docSnap.id, tag: docSnap.data().tag || docSnap.id };
                 }
             }
+
             setGame(foundGame);
+
             const qs = await getDocs(query(collection(db, "manual-games"), orderBy("name")));
             setSidebarGames(
                 qs.docs.map((d) => {
                     const v = d.data() || {};
-                    return { name: v.name || "", tag: v.tag || d.id };
+                    return { name: v.name || "", tag: v.tag || d.id, translation: v.translation || {} };
                 })
             );
+
             setLoading(false);
         })();
     }, [iurl]);
@@ -107,23 +126,31 @@ export default function GameDetails() {
     const baseLang = (i18n.language || "").split("-")[0];
     const tr = game?.translation || {};
     const currentTr = tr[i18n.language] ?? tr[baseLang] ?? null;
+
     const title = currentTr?.name ?? game?.name ?? "";
     const sourceText = currentTr?.text ?? game?.text ?? "";
+
     const rewrittenHTML = useMemo(() => rewriteImagesToGames(sourceText), [sourceText]);
+
     const isRTL = /^ar|^he|^fa|^ur/i.test(i18n.language || "");
 
     const handleContentClick = (e) => {
         const img = e.target.closest("img");
         if (!img) return;
-        setImageDialogSrc(img.getAttribute("src") || "");
-        setImageDialogAlt(img.getAttribute("alt") || "");
+        setImageDialogSrc(img.src);
+        setImageDialogAlt(img.alt);
         setImageDialogOpen(true);
     };
 
     return (
         <div className="bg-black min-h-screen text-white" dir={isRTL ? "rtl" : "ltr"}>
-            <Navbar title={title} />
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-6 pb-16">
+            <Navbar
+                title={title}
+                showMenuButton
+                onMenuClick={() => setDrawerOpen(true)}
+            />
+
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-6 pb-16">
                 <div className="mb-5 flex items-center gap-4">
                     <button
                         onClick={() => navigate("/")}
@@ -148,22 +175,30 @@ export default function GameDetails() {
                         {loading && <SkeletonContent />}
                         {!loading && !!rewrittenHTML && (
                             <div
-                                key={i18n.language || "default"}
-                                className="manual-html mt-2 border border-[#A66C13] rounded-2xl p-6 sm:p-8 bg-[#0f141a] shadow-[0_0_0_1px_rgba(244,165,46,.08)]"
+                                className="manual-html mt-2 border border-[#A66C13] rounded-2xl p-6 sm:p-8 bg-[#0f141a]"
                                 style={{ textAlign: isRTL ? "right" : "left" }}
                                 dangerouslySetInnerHTML={{ __html: rewrittenHTML }}
                                 onClick={handleContentClick}
                             />
                         )}
-                        {!loading && !rewrittenHTML && (
-                            <div className="text-gray-300 text-3xl md:text-4xl font-extrabold mt-4">
-                                {t("details.noContent")}
-                            </div>
-                        )}
                     </main>
                 </div>
             </div>
+
             <Footer />
+
+            <AppDrawer
+                open={drawerOpen}
+                onClose={() => setDrawerOpen(false)}
+                games={sidebarGames}
+                selected={String(iurl)}
+                loading={loading}
+                onSelect={(tag) => {
+                    navigate(`/games/${tag}`);
+                    setDrawerOpen(false);
+                }}
+            />
+
             <ImageDialog
                 open={imageDialogOpen}
                 src={imageDialogSrc}

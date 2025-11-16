@@ -1,75 +1,15 @@
-import { useEffect, useMemo, useRef, useState, Fragment } from "react";
+// src/pages/Home.jsx
+import { useEffect, useMemo, useRef, useState } from "react";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../firebase";
 import Navbar from "@/components/Navbar";
 import GameCard from "@/components/GameCard";
 import Footer from "@/components/Footer";
 import Sidebar from "@/components/Sidebar";
-import { Dialog, Transition } from "@headlessui/react";
-import { Search, X, Menu } from "lucide-react";
+import AppDrawer from "@/components/AppDrawer";
+import { Search, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
-
-function SidebarList({ games = [], selected = "All", onSelect = () => { }, onAfterSelect = () => { } }) {
-    const { t, i18n } = useTranslation();
-    const total = games.length;
-    return (
-        <div className="p-4">
-            <h3 className="text-3xl md:text-4xl uppercase tracking-wide text-gray-200 mb-5 font-extrabold">
-                {t("list.games")} {total}
-            </h3>
-            <ul className="space-y-2">
-                <li>
-                    <button
-                        type="button"
-                        onClick={() => {
-                            onSelect("All");
-                            onAfterSelect();
-                        }}
-                        className={`w-full text-left block px-5 py-4 rounded-lg border text-xl md:text-2xl font-extrabold ${selected === "All"
-                                ? "border-[#F4A52E] text-primary-300 bg-[#1a2028]"
-                                : "border-[#2a3444] text-gray-100 hover:text-primary-300 hover:border-[#A66C13]"
-                            }`}
-                    >
-                        {t("list.all")} ({total})
-                    </button>
-                </li>
-                {games
-                    .slice()
-                    .sort((a, b) => {
-                        const aName =
-                            (a.translation?.[i18n.language] ??
-                                a.translation?.[(i18n.language || "").split("-")[0]])?.name ??
-                            a.name ??
-                            "";
-                        const bName =
-                            (b.translation?.[i18n.language] ??
-                                b.translation?.[(i18n.language || "").split("-")[0]])?.name ??
-                            b.name ??
-                            "";
-                        return aName.localeCompare(bName);
-                    })
-                    .map((g) => (
-                        <li key={g.tag}>
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    onSelect(g.tag);
-                                    onAfterSelect();
-                                }}
-                                className={`w-full text-left block px-5 py-4 rounded-lg border text-xl md:text-2xl font-extrabold ${selected === g.tag
-                                        ? "border-[#F4A52E] text-primary-300 bg-[#1a2028]"
-                                        : "border-[#2a3444] text-gray-100 hover:text-primary-300 hover:border-[#A66C13]"
-                                    }`}
-                            >
-                                {(g.translation?.[i18n.language] ??
-                                    g.translation?.[(i18n.language || "").split("-")[0]])?.name || g.name}
-                            </button>
-                        </li>
-                    ))}
-            </ul>
-        </div>
-    );
-}
+import { useNavigate } from "react-router-dom";
 
 function SkeletonSidebar() {
     return (
@@ -97,21 +37,9 @@ function SkeletonCard() {
     );
 }
 
-function SkeletonDrawerList() {
-    return (
-        <div className="p-4 animate-pulse">
-            <div className="h-8 w-44 bg-gray-800 rounded mb-4" />
-            <ul className="space-y-2">
-                {Array.from({ length: 10 }).map((_, i) => (
-                    <li key={i} className="h-12 bg-gray-800/70 rounded-lg" />
-                ))}
-            </ul>
-        </div>
-    );
-}
-
 export default function Home() {
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const [games, setGames] = useState([]);
     const [sidebarGames, setSidebarGames] = useState([]);
     const [selectedTag, setSelectedTag] = useState("All");
@@ -159,21 +87,25 @@ export default function Home() {
         inputRef.current?.focus();
     };
 
+    const handleSelectGame = (tag) => {
+        setSelectedTag(tag);
+        if (tag !== "All") {
+            navigate(`/games/${tag}`);
+        }
+    };
+
     return (
         <div className="bg-black min-h-screen text-white">
-            <Navbar onLang={setLang} lang={lang} />
+            <Navbar
+                onLang={setLang}
+                lang={lang}
+                showMenuButton
+                onMenuClick={() => setDrawerOpen(true)}
+            />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-6">
                 <div className="flex items-center justify-between gap-4">
                     <div className="flex items-center gap-3">
-                        <button
-                            type="button"
-                            onClick={() => setDrawerOpen(true)}
-                            className="lg:hidden inline-flex items-center justify-center h-11 w-11 rounded-md border border-[#A66C13] text-gray-100 hover:text-primary-300 hover:bg-orange-500/10"
-                            aria-label={t("actions.openMenu")}
-                        >
-                            <Menu className="h-6 w-6" />
-                        </button>
                         <h1 className="text-3xl md:text-4xl font-extrabold text-primary-400 leading-tight">
                             {t("titles.manual")}
                         </h1>
@@ -234,15 +166,22 @@ export default function Home() {
                         {loading ? (
                             <SkeletonSidebar />
                         ) : (
-                            <Sidebar games={sidebarGames} selected={selectedTag} onSelect={setSelectedTag} />
+                            <Sidebar
+                                games={sidebarGames}
+                                selected={selectedTag}
+                                onSelect={handleSelectGame}
+                            />
                         )}
                     </div>
 
                     <main>
                         <div className="flex items-center gap-3 mb-5 text-base md:text-lg text-gray-200 font-extrabold">
                             {t("list.showing")}{" "}
-                            <span className="text-primary-300 mx-1">{loading ? "…" : filtered.length}</span>
-                            {!loading && (selectedTag !== "All" ? `${t("list.in")} “${selectedTag}”` : t("list.gamesWord"))}
+                            <span className="text-primary-300 mx-1">
+                                {loading ? "…" : filtered.length}
+                            </span>
+                            {!loading &&
+                                (selectedTag !== "All" ? `${t("list.in")} “${selectedTag}”` : t("list.gamesWord"))}
                             {!loading && (q.trim() ? ` ${t("list.for")} “${q.trim()}”` : "")}
                             {!loading && (selectedTag !== "All" || q.trim()) && (
                                 <button
@@ -275,38 +214,17 @@ export default function Home() {
                 </div>
             </div>
 
-            <Transition show={drawerOpen} as={Fragment}>
-                <Dialog as="div" className="relative z-50 lg:hidden" onClose={setDrawerOpen}>
-                    <div className="fixed inset-0 bg-black/60" />
-                    <div className="fixed inset-0 flex">
-                        <Dialog.Panel className="relative w-80 max-w-[85%] bg-[#0f141a] border-r border-[#A66C13] shadow-xl h-full flex flex-col">
-                            <div className="flex items-center justify-between p-5 border-b border-[#1b2330] shrink-0">
-                                <span className="text-3xl font-extrabold text-primary-300">{t("list.games")}</span>
-                                <button
-                                    type="button"
-                                    onClick={() => setDrawerOpen(false)}
-                                    className="h-11 w-11 inline-flex items-center justify-center rounded-md text-gray-300 hover:text-primary-300 hover:bg-orange-500/10"
-                                    aria-label={t("actions.closeMenu")}
-                                >
-                                    <X className="h-6 w-6" />
-                                </button>
-                            </div>
-                            <div className="flex-1 overflow-y-auto" style={{ WebkitOverflowScrolling: "touch" }}>
-                                {loading ? (
-                                    <SkeletonDrawerList />
-                                ) : (
-                                    <SidebarList
-                                        games={sidebarGames}
-                                        selected={selectedTag}
-                                        onSelect={setSelectedTag}
-                                        onAfterSelect={() => setDrawerOpen(false)}
-                                    />
-                                )}
-                            </div>
-                        </Dialog.Panel>
-                    </div>
-                </Dialog>
-            </Transition>
+            <AppDrawer
+                open={drawerOpen}
+                onClose={() => setDrawerOpen(false)}
+                games={sidebarGames}
+                selected={selectedTag}
+                loading={loading}
+                onSelect={(tag) => {
+                    handleSelectGame(tag);
+                    setDrawerOpen(false);
+                }}
+            />
         </div>
     );
 }
