@@ -8,7 +8,7 @@ import {
     orderBy,
     query,
     where,
-    limit
+    limit,
 } from "firebase/firestore";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
@@ -27,12 +27,56 @@ const basename = (p = "") => {
 function rewriteImagesToGames(html = "") {
     const container = document.createElement("div");
     container.innerHTML = html || "";
+
     container.querySelectorAll("img").forEach((img) => {
         const src = img.getAttribute("src") || "";
         if (/^(https?:|data:|blob:|\/\/|\/games\/)/i.test(src)) return;
         const file = basename(src.split("?")[0].split("#")[0]);
         if (file) img.setAttribute("src", `/games/${encodeURIComponent(file)}`);
     });
+
+    container.querySelectorAll("h2").forEach((h2) => {
+        const txt = (h2.textContent || "").replace(/:+\s*$/g, "").trim();
+        h2.textContent = txt;
+    });
+
+    container.querySelectorAll("h3").forEach((h3) => {
+        const txt = (h3.textContent || "").replace(/:+\s*$/g, "").trim();
+        h3.textContent = txt;
+    });
+
+    container.querySelectorAll("div.border2").forEach((d) => {
+        d.classList.remove("border2");
+        d.classList.add("img-card");
+    });
+
+    container.querySelectorAll("div.border").forEach((d) => {
+        d.classList.remove("border");
+        d.classList.add("img-frame");
+    });
+
+    container.querySelectorAll("div.table1,div.table3,div.table4,div.table5").forEach((w) => {
+        w.classList.add("table-wrap");
+    });
+
+    container.querySelectorAll("div.table-wrap > div.img-card").forEach((card) => {
+        card.classList.add("table-card");
+    });
+
+    container.querySelectorAll("div.table-wrap div.img-frame").forEach((frame) => {
+        frame.classList.add("table-frame");
+    });
+
+    container.querySelectorAll("p.under-table").forEach((p) => {
+        p.classList.remove("under-table");
+        p.classList.add("note");
+    });
+
+    container.querySelectorAll("table").forEach((table) => {
+        if (table.closest(".table-frame")) return;
+        table.classList.add("w-full");
+    });
+
     return container.innerHTML;
 }
 
@@ -74,7 +118,6 @@ export default function GameDetails() {
     const navigate = useNavigate();
 
     const [drawerOpen, setDrawerOpen] = useState(false);
-
     const [game, setGame] = useState(null);
     const [sidebarGames, setSidebarGames] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -105,7 +148,11 @@ export default function GameDetails() {
             if (!foundGame && tag) {
                 const docSnap = await getDoc(doc(db, "manual-games", tag));
                 if (docSnap.exists()) {
-                    foundGame = { ...docSnap.data(), id: docSnap.id, tag: docSnap.data().tag || docSnap.id };
+                    foundGame = {
+                        ...docSnap.data(),
+                        id: docSnap.id,
+                        tag: docSnap.data().tag || docSnap.id,
+                    };
                 }
             }
 
@@ -144,11 +191,7 @@ export default function GameDetails() {
 
     return (
         <div className="bg-black min-h-screen text-white" dir={isRTL ? "rtl" : "ltr"}>
-            <Navbar
-                title={title}
-                showMenuButton
-                onMenuClick={() => setDrawerOpen(true)}
-            />
+            <Navbar title={title} showMenuButton onMenuClick={() => setDrawerOpen(true)} />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-6 pb-16">
                 <div className="mb-5 flex items-center gap-4">
@@ -159,6 +202,7 @@ export default function GameDetails() {
                         <ArrowLeft className="h-7 w-7" /> {t("actions.back")}
                     </button>
                 </div>
+
                 <div className="grid grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)] gap-6">
                     <div className="hidden lg:block">
                         {loading ? (
@@ -171,11 +215,12 @@ export default function GameDetails() {
                             />
                         )}
                     </div>
-                    <main>
+
+                    <main className="min-w-0">
                         {loading && <SkeletonContent />}
                         {!loading && !!rewrittenHTML && (
                             <div
-                                className="manual-html mt-2 border border-[#A66C13] rounded-2xl p-6 sm:p-8 bg-[#0f141a]"
+                                className="manual mt-2 min-w-0 border border-[#A66C13] rounded-2xl p-6 sm:p-8 bg-[#0f141a] shadow-[0_0_0_1px_rgba(244,165,46,.08)] overflow-visible"
                                 style={{ textAlign: isRTL ? "right" : "left" }}
                                 dangerouslySetInnerHTML={{ __html: rewrittenHTML }}
                                 onClick={handleContentClick}

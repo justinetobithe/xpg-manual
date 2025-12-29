@@ -1,5 +1,4 @@
-// src/components/Navbar.jsx
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, Fragment } from "react";
 import { useTranslation } from "react-i18next";
 import { Menu as LangMenu, Transition } from "@headlessui/react";
 import { Menu as MenuIcon } from "lucide-react";
@@ -14,8 +13,6 @@ function Flag({ country, className = "h-4 w-6 rounded-sm" }) {
 
 export default function Navbar({
     title = "",
-    onLang,
-    lang,
     showMenuButton = false,
     onMenuClick = () => { },
 }) {
@@ -59,10 +56,7 @@ export default function Navbar({
                             </button>
                         )}
 
-                        <Link
-                            to="/"
-                            className="hidden sm:inline-flex items-center"
-                        >
+                        <Link to="/" className="hidden sm:inline-flex items-center">
                             <img
                                 src="/logo_2.png"
                                 alt={t("brand.name")}
@@ -95,12 +89,11 @@ export default function Navbar({
                                 <LangMenu.Button className="inline-flex items-center gap-2 rounded-md border border-[#A66C13] px-3 py-2 text-sm sm:text-base font-bold text-gray-100 hover:border-primary-400 transition">
                                     <Flag country={current.country} />
                                     <span className="hidden sm:inline">{current.label}</span>
-                                    <span className="sm:hidden">
-                                        {current.code.toUpperCase()}
-                                    </span>
+                                    <span className="sm:hidden">{current.code.toUpperCase()}</span>
                                 </LangMenu.Button>
+
                                 <Transition
-                                    as="div"
+                                    as={Fragment}
                                     enter="transition ease-out duration-100"
                                     enterFrom="transform opacity-0 scale-95"
                                     enterTo="transform opacity-100 scale-100"

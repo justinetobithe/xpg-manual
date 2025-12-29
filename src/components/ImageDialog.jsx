@@ -37,11 +37,12 @@ export default function ImageDialog({ open, src, alt, onClose }) {
                                 >
                                     <X className="h-5 w-5" />
                                 </button>
+
                                 <div className="mt-4">
                                     <img
                                         src={src}
                                         alt={alt}
-                                        className="mx-auto max-h-[80vh] w-auto rounded-xl border border-[#F4A52E] bg-black object-contain"
+                                        className="mx-auto max-h-[80vh] w-auto rounded-xl bg-black object-contain"
                                     />
                                     {alt && (
                                         <Dialog.Description className="mt-3 text-center text-sm text-slate-300">

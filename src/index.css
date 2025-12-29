@@ -16,347 +16,184 @@
 
 @layer utilities {
   body {
-    @apply bg-slate-900 text-slate-100;
+    @apply bg-black text-slate-100;
   }
 }
 
 @layer components {
-  .manual-html {
-    @apply text-slate-100 text-base md:text-lg leading-relaxed font-normal;
+  .manual {
+    @apply w-full min-w-0 text-slate-100 text-base md:text-lg leading-relaxed;
   }
 
-  .manual-html h1 {
-    color: #d68c30;
-    font-weight: 900;
-    font-size: 2rem;
-    margin-bottom: 0.75rem;
+  .manual h1 {
+    @apply mb-4 text-3xl md:text-4xl font-extrabold text-primary-300;
   }
 
-  .manual-html h2 {
-    @apply mt-6 mb-3 text-2xl md:text-3xl font-extrabold text-primary-300;
+  .manual h2 {
+    @apply mt-10 mb-4 text-2xl md:text-3xl font-extrabold text-primary-300;
   }
 
-  .manual-html h3 {
-    @apply mt-4 mb-1 text-xl md:text-2xl font-extrabold text-primary-300;
+  .manual h3 {
+    @apply mt-8 mb-3 text-xl md:text-2xl font-extrabold text-primary-300;
   }
 
-  .manual-html p {
-    @apply mb-4;
-    font-size: 1.05rem;
-    font-weight: 600;
+  .manual p {
+    @apply mb-5 text-[1.05rem] md:text-lg font-medium text-slate-100/90;
   }
 
-  .manual-html p span {
-    @apply text-primary-300 font-semibold;
+  .manual p br {
+    content: "";
+    display: block;
+    margin-top: 0.4rem;
   }
 
-  .manual-html sup {
+  .manual strong {
+    @apply text-primary-300 font-extrabold;
+  }
+
+  .manual a {
+    @apply text-primary-300 underline underline-offset-4 hover:text-primary-200;
+  }
+
+  .manual sup {
     vertical-align: text-top;
     font-size: 0.75em;
   }
 
-  .manual-html .green {
-    color: #3d9432;
+  .manual ul {
+    @apply my-4 space-y-2 list-disc pl-6 text-slate-100/90;
   }
 
-  .manual-html .red {
-    color: #d2232a;
+  .manual ol {
+    @apply my-4 space-y-2 list-decimal pl-6 text-slate-100/90;
   }
 
-  .manual-html .blue {
-    color: #3484c5;
+  .manual li {
+    @apply leading-relaxed;
   }
 
-  .manual-html .rose {
-    color: #ec008c;
-  }
-
-  .manual-html .clear {
-    clear: both;
-    padding: 0.5%;
-    width: 100%;
-  }
-
-  .manual-html ul {
-    padding-left: 0;
-    list-style: none;
-    margin-bottom: 1rem;
-  }
-
-  .manual-html ol {
-    padding-left: 1.4em;
-    list-style: decimal;
-    margin-bottom: 1rem;
-  }
-
-  .manual-html li {
-    margin-bottom: 0.25rem;
-  }
-
-  .manual-html .border {
-    @apply overflow-hidden rounded-xl border border-[#F4A52E];
-  }
-
-  .manual-html .border2 {
-    @apply bg-[#0b1116] border border-[#F4A52E] rounded-2xl p-2 shadow-[0_0_0_1px_rgba(244,165,46,.3)];
-  }
-
-  .manual-html .border img {
+  .manual img {
     @apply block w-full h-auto;
   }
 
-  .manual-html .view {
-    @apply grid gap-4 my-4;
-    grid-template-columns: 1fr;
+  .manual .view {
+    @apply grid gap-4 my-5 grid-cols-1 md:grid-cols-2;
   }
 
-  @media (min-width: 768px) {
-    .manual-html .view {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+  .manual .img-card {
+    @apply bg-[#0b1116] border border-[#F4A52E] rounded-2xl p-2 shadow-[0_0_0_1px_rgba(244,165,46,.18)];
   }
 
-  .manual-html table {
-    border-collapse: collapse;
-    border-spacing: 0;
+  .manual .img-frame {
+    @apply overflow-hidden rounded-xl;
   }
 
-  .manual-html .table1 {
-    width: fit-content;
-    padding: 2% 0;
-    display: block;
+  .manual .img-frame img {
+    @apply transition-transform duration-300;
   }
 
-  .manual-html .table1 .tab1 {
-    float: left;
-    margin-bottom: 20px;
+  .manual .img-card:hover .img-frame img {
+    transform: scale(1.01);
   }
 
-  .manual-html .table1 .tab2 {
-    float: right;
+  .manual .table-wrap {
+    @apply my-7;
   }
 
-  .manual-html .table1 table {
-    font-size: 1.1em;
-    font-weight: normal;
-    border-collapse: collapse;
-    border-spacing: 0;
-    text-align: left;
+  .manual .table-card {
+    @apply bg-[#0b1116] border border-[#F4A52E] rounded-2xl p-2 shadow-[0_0_0_1px_rgba(244,165,46,.18)];
   }
 
-  .manual-html .table1 table .top {
-    background-color: #d68c30;
+  .manual .table-frame {
+    @apply rounded-xl overflow-x-auto;
+    -webkit-overflow-scrolling: touch;
   }
 
-  .manual-html .table1 table td {
-    border: 3px solid white;
-    padding: 5px;
+  .manual .table-frame::-webkit-scrollbar {
+    height: 10px;
   }
 
-  .manual-html .table1 table td:nth-child(3) {
-    color: #d68c30;
+  .manual .table-frame::-webkit-scrollbar-thumb {
+    background: rgba(244, 165, 46, 0.35);
+    border-radius: 999px;
   }
 
-  .manual-html .table2 {
-    @apply my-6 w-full;
+  .manual .table-frame::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 999px;
   }
 
-  .manual-html .table2 table {
-    @apply w-full text-left text-sm md:text-base border-collapse;
-  }
-
-  .manual-html .table2 table tr {
-    border-bottom: 1px solid #333333;
-  }
-
-  .manual-html .table2 table tr:first-child,
-  .manual-html .table2 table tr:last-child {
-    border-bottom: 1px solid transparent;
-  }
-
-  .manual-html .table2 td,
-  .manual-html .table2 th {
-    @apply px-3 py-2 align-top text-slate-100;
-  }
-
-  .manual-html .table2 img {
-    width: 100%;
-    height: 100%;
-  }
-
-  .manual-html .table2 td:nth-child(1) {
-    font-size: 1.2em;
-    font-weight: 600;
-    vertical-align: middle;
-  }
-
-  .manual-html .table3 {
-    width: fit-content;
-    padding: 2% 15%;
-    display: inline-block;
-    padding-left: 0;
-  }
-
-  .manual-html .table3 table {
-    font-size: 1.3em;
-    font-weight: 600;
-    border-collapse: collapse;
-    border-spacing: 0;
-  }
-
-  .manual-html .table3 table td {
-    border: 3px solid white;
-    padding: 5px;
-    vertical-align: middle;
-  }
-
-  .manual-html .table3 table td:nth-child(1) {
-    text-align: left;
-    color: #d68c30;
-    vertical-align: middle;
-  }
-
-  .manual-html .table4 {
-    @apply my-6 overflow-x-auto;
-    text-align: left;
-    width: 100%;
-  }
-
-  .manual-html .table4 table {
-    @apply w-full text-left text-sm md:text-base border-collapse;
-    width: 100%;
+  .manual table {
+    @apply w-full border-collapse text-left;
+    max-width: 100%;
     table-layout: fixed;
-    word-wrap: break-word;
   }
 
-  .manual-html .table4 td,
-  .manual-html .table4 th {
-    @apply px-3 py-2 align-top border border-[#2a3444] text-slate-100;
+  .manual thead tr,
+  .manual tr.top {
+    @apply bg-[#141a22];
   }
 
-  .manual-html .table4 tr.top td,
-  .manual-html .table4 tr.top th {
-    @apply bg-[#141a22] font-bold text-primary-300;
+  .manual th {
+    @apply px-4 py-3 text-sm md:text-base font-extrabold text-primary-300 border-b border-white/10;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 
-  @media (max-width: 640px) {
-    .manual-html .table4 table {
-      font-size: 0.75rem;
-    }
-
-    .manual-html .table4 td,
-    .manual-html .table4 th {
-      padding: 0.25rem 0.35rem;
-    }
+  .manual td {
+    @apply px-4 py-3 text-sm md:text-base font-medium text-slate-100 border-b border-white/10;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 
-  .manual-html .table5 {
-    padding: 2% 5%;
-    text-align: center;
-    width: 100%;
+  .manual td:first-child,
+  .manual th:first-child {
+    white-space: nowrap;
   }
 
-  .manual-html .table5 table {
-    display: inline-block;
-    width: 90%;
+  .manual tbody tr:nth-child(even) td {
+    @apply bg-white/[0.02];
   }
 
-  .manual-html .table5 table td {
-    padding: 5px;
-    vertical-align: middle;
+  .manual tbody tr:hover td {
+    @apply bg-orange-500/5;
   }
 
-  .manual-html .fsize table {
-    font-size: 1.3em;
-    font-weight: 600;
+  .manual .note {
+    @apply mt-4 rounded-xl border border-white/10 bg-[#0b1116] px-4 py-3 text-sm md:text-base text-slate-200;
   }
 
-  .manual-html .under-table {
-    @apply mt-3 text-sm text-slate-300 italic;
-    font-weight: normal;
+  .manual .note sup {
+    @apply text-primary-300;
   }
 
-  .manual-html .sidetext table td {
-    padding: 1%;
+  .manual .note strong {
+    @apply text-primary-300;
   }
 
-  .manual-html .sidetext td:nth-child(1) {
-    width: 45%;
+  .manual .layout {
+    @apply my-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3;
   }
 
-  .manual-html .sidetext p {
-    margin-bottom: 4%;
+  .manual .block {
+    @apply flex flex-col items-center text-center;
   }
 
-  .manual-html .sidetext2 table td {
-    padding: 1%;
+  .manual .wrap {
+    @apply w-full max-w-[300px];
   }
 
-  .manual-html .sidetext2 td:nth-child(1) {
-    width: 65%;
+  .manual .card-title {
+    @apply mt-4 text-xl md:text-2xl font-extrabold text-primary-300;
   }
 
-  .manual-html .sidetext2 p {
-    margin-bottom: 4%;
+  .manual .card-text {
+    @apply mt-2 text-[1.05rem] md:text-lg font-medium text-slate-100/90;
   }
 
-  .manual-html .layout {
-    width: 100%;
-    margin: 2% 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    justify-content: center;
-  }
-
-  .manual-html .layout .block {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 260px;
-    text-align: center;
-  }
-
-  .manual-html .layout .block .wrap {
-    width: 100%;
-    margin: 0.75rem 0 0;
-    font-size: 1.05rem;
-  }
-
-  .manual-html .layout .block .wrap:first-child {
-    margin-top: 0;
-  }
-
-  .manual-html .layout .block img {
-    height: auto;
-    max-width: 100%;
-    display: block;
-  }
-
-  .manual-html .mobile {
-    margin-top: 0;
-    margin: auto;
-    padding: 2%;
-  }
-
-  .manual-html .mobile img {
-    max-width: 100%;
-    display: block;
-  }
-
-  .manual-html .blok-inline {
-    display: inline-block;
-  }
-
-  .manual-html .width {
-    display: block;
-    width: 50%;
-    padding: 1%;
-    float: left;
-  }
-
-  .manual-html .width img {
-    max-width: 100%;
-    display: block;
+  .manual hr {
+    @apply my-10 border-white/10;
   }
 }
